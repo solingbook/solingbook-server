@@ -14,13 +14,11 @@ export class UsersController {
 
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<User> {
-    console.log(typeof id);
     return this.usersService.findOne(id);
   }
 
   @Post()
   async create(@Body() create: CreateUserDto) {
-    console.log(create);
     return this.usersService.create(create);
   }
 

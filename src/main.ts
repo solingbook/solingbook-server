@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { TypedConfigService } from './configs/typedConfig.service';
 import { ValidationPipe } from '@nestjs/common';
+import { LoggerInterceptor } from './global/interceptors/logger.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,8 @@ async function bootstrap() {
       transform: true, // 유저가 보낸 데이터(param, query, body 모두)를 실제 DTO클래스 인스턴스 혹은 실제 지정한 타입으로 변환.
     }),
   );
+
+  app.useGlobalInterceptors(new LoggerInterceptor());
 
   await app.listen(configService.get('PORT'));
 }
