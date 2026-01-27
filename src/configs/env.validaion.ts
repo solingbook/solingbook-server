@@ -1,10 +1,11 @@
-import { plainToInstance } from 'class-transformer';
+import { plainToInstance, Type } from 'class-transformer';
 import {
   IsBoolean,
   IsBooleanString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsNumberString,
   IsString,
   Max,
   Min,
@@ -63,8 +64,7 @@ class EnvironmentVariables {
 
   @IsBooleanString()
   @IsNotEmpty()
-  @IsBoolean()
-  DB_SYNCHRONIZE: boolean;
+  DB_SYNCHRONIZE: string;
 }
 
 export function validate(config: Record<string, unknown>) {
