@@ -7,10 +7,12 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigsModule } from './configs/configs.module';
 import { User } from './users/user.entity';
 import { TypedConfigService } from './configs/typedConfig.service';
+import { validate } from './configs/env.validaion';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      validate,
       isGlobal: true,
       envFilePath: [
         `.env.${process.env.NODE_ENV}.local`,
