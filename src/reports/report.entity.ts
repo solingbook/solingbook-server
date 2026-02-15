@@ -16,10 +16,6 @@ export class Report {
   @PrimaryGeneratedColumn('uuid', { name: 'report_id' })
   reportId: string;
 
-  @ManyToOne(() => User, (user) => user.reports, { nullable: false })
-  @JoinColumn({ name: 'reporter_id' })
-  reporter: User;
-
   @RelationId((report: Report) => report.reporter)
   @Column({ name: 'reporter_id', type: 'uuid', unique: true })
   reporterId: string;
@@ -38,4 +34,8 @@ export class Report {
 
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
   updatedAt: Date;
+
+  @ManyToOne(() => User, (user) => user.reports, { nullable: false })
+  @JoinColumn({ name: 'reporter_id' })
+  reporter: User;
 }

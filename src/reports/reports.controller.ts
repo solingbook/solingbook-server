@@ -1,4 +1,42 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { ReportsService } from './reports.service';
+import { Report } from './report.entity';
+import { CreateReportDto } from './dto/createReport.dto';
+import { PostsQueryDto } from './dto/gerReportQuery.dto';
 
 @Controller('reports')
-export class ReportsController {}
+export class ReportsController {
+  constructor(private readonly reportsService: ReportsService) {}
+
+  @Get()
+  async findAll(): Promise<Report[]> {
+    return this.reportsService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', new ParseUUIDPipe()) reportId: string,
+    @Query() query: PostsQueryDto,
+  ): Promise<Report> {
+    return this.reportsService.findOne(reportId, query);
+  }
+
+  @Post()
+  async create(@Body() createReportDto: CreateReportDto) {
+    return this.reportsService.create(createReportDto);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.reportsService.remove(id);
+  }
+}
