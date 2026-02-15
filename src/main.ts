@@ -3,9 +3,13 @@ import { AppModule } from './app.module';
 import { TypedConfigService } from './configs/typedConfig.service';
 import { ValidationPipe } from '@nestjs/common';
 import { LoggerInterceptor } from './global/interceptors/logger.interceptor';
+import { initializeTransactionalContext } from 'typeorm-transactional';
 
 async function bootstrap() {
+  initializeTransactionalContext(); // 트랜잭션 컨텍스트 초기화
+
   const app = await NestFactory.create(AppModule);
+
   const configService = app.get(TypedConfigService);
 
   app.useGlobalPipes(

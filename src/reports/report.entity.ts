@@ -17,7 +17,7 @@ export class Report {
   reportId: string;
 
   @RelationId((report: Report) => report.reporter)
-  @Column({ name: 'reporter_id', type: 'uuid', unique: true })
+  @Column({ name: 'reporter_id', type: 'uuid' })
   reporterId: string;
 
   @Column({ name: 'target_type', type: 'enum', enum: TargetType })

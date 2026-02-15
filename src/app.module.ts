@@ -10,6 +10,8 @@ import { TypedConfigService } from './configs/typedConfig.service';
 import { validate } from './configs/env.validaion';
 import { ReportsModule } from './reports/reports.module';
 import { Report } from './reports/report.entity';
+import { DataSource } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 @Module({
   imports: [
@@ -37,6 +39,11 @@ import { Report } from './reports/report.entity';
         synchronize: config.get('DB_SYNCHRONIZE'),
         autoLoadEntities: true,
       }),
+      dataSourceFactory: async (options) => {
+        const dataSource = new DataSource(options);
+        await dataSource.initialize();
+        return addTransactionalDataSource(dataSource);
+      },
     }),
 
     UsersModule,
