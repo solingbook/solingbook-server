@@ -1,35 +1,33 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
+import { UserRepository } from './users.interface';
+import { TypeOrmUserRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @Inject(TypeOrmUserRepository)
+    private readonly userRepo: UserRepository,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = this.usersRepository.create(createUserDto);
-
-    return this.usersRepository.save(user);
+    this.userRepo.create(createUserDto);
+    return null;
   }
 
   async findAll() {
-    return this.usersRepository.find();
+    return this.userRepo.findAll();
   }
 
-  async findOne(id: string) {
-    const user = await this.usersRepository.findOneBy({ userId: id });
+  async findOne(userId: string) {
+    const user = await this.userRepo.findOneById(userId);
 
     if (!user) throw new NotFoundException('User not found');
 
     return user;
   }
 
-  async remove(id: string) {
-    await this.usersRepository.delete({ userId: id });
+  async delete(userId: string) {
+    await this.userRepo.delete(userId);
   }
 }

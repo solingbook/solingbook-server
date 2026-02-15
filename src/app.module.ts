@@ -40,7 +40,6 @@ import { Report } from './reports/report.entity';
     }),
 
     UsersModule,
-
     ReportsModule,
   ],
   controllers: [AppController],
