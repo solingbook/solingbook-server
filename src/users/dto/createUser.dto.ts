@@ -1,23 +1,37 @@
 import {
-  IsBoolean,
   IsDefined,
+  IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { UserRole } from '../constant/role.enum';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  firstName: string;
+  @IsEmail()
+  email: string;
 
   @IsString()
   @IsDefined()
   @IsNotEmpty()
-  lastName: string;
+  username: string;
 
-  @IsBoolean()
+  @IsString()
+  @IsDefined()
+  @IsNotEmpty()
+  password: string;
+
   @IsOptional()
-  isActive?: boolean;
+  @Transform(({ value }) => value ?? UserRole.MEMBER)
+  @IsEnum(UserRole)
+  role: UserRole;
+
+  @IsOptional()
+  @IsString()
+  profileImgUrl: string;
 }

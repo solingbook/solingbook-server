@@ -13,7 +13,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<User> {
+  async findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(id);
   }
 
@@ -23,7 +23,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async remove(@Param() id: number) {
+  async remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
 }
