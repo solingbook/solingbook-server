@@ -8,6 +8,8 @@ import { ConfigsModule } from './configs/configs.module';
 import { User } from './users/user.entity';
 import { TypedConfigService } from './configs/typedConfig.service';
 import { validate } from './configs/env.validaion';
+import { ReportsModule } from './reports/reports.module';
+import { Report } from './reports/report.entity';
 
 @Module({
   imports: [
@@ -31,13 +33,15 @@ import { validate } from './configs/env.validaion';
         username: config.get('DB_USER'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
-        entities: [User],
+        entities: [User, Report],
         synchronize: config.get('DB_SYNCHRONIZE'),
         autoLoadEntities: true,
       }),
     }),
 
     UsersModule,
+
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

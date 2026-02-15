@@ -21,15 +21,15 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async findOne(id: number) {
-    const user = await this.usersRepository.findOneBy({ id });
+  async findOne(id: string) {
+    const user = await this.usersRepository.findOneBy({ userId: id });
 
     if (!user) throw new NotFoundException('User not found');
 
     return user;
   }
 
-  async remove(id: number) {
-    await this.usersRepository.delete(id);
+  async remove(id: string) {
+    await this.usersRepository.delete({ userId: id });
   }
 }
