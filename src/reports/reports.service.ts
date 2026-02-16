@@ -1,41 +1,52 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Report } from './report.entity';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReportDto } from './dto/createReport.dto';
 import { PostsQueryDto } from './dto/gerReportQuery.dto';
+import { TypeOrmReportRepository } from './reports.repository';
+import { ReportRepository } from './reports.interface';
+import { TypeOrmUserRepository } from 'src/users/users.repository';
+import { UserRepository } from 'src/users/users.interface';
+import { TargetType } from './constant/targetType.enum';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ReportsService {
   constructor(
-    @InjectRepository(Report)
-    private reportsRepository: Repository<Report>,
+    @Inject(TypeOrmReportRepository)
+    private readonly reportRepo: ReportRepository,
+    @Inject(TypeOrmUserRepository)
+    private readonly userRepo: UserRepository,
   ) {}
 
+  // TODO: 인증/인가 작업 후 reporterId 입력 로직 보완하기
+  @Transactional()
   async create(createReportDto: CreateReportDto) {
-    const user = this.reportsRepository.create(createReportDto);
+    const { targetId, targetType } = createReportDto;
 
-    return this.reportsRepository.save(user);
-  }
+    if (targetType === TargetType.USER) {
+      const user = await this.userRepo.findOneById(targetId);
 
-  async findAll() {
-    return this.reportsRepository.find();
+      if (!user) throw new NotFoundException('User not found');
+    }
+
+    // TODO: Post 테이블 생성 후 Post도 검증하기
+    // if (targetType === TargetType.POST){}
+
+    return this.reportRepo.create(createReportDto);
   }
 
   async findOne(reportId: string, query: PostsQueryDto) {
-    const relations = query.withUserInfo ? ['reporter'] : [];
+    const report = await this.reportRepo.findOne(reportId, query);
 
-    const user = await this.reportsRepository.findOne({
-      where: { reportId },
-      relations,
-    });
+    if (!report) throw new NotFoundException('Report not found');
 
-    if (!user) throw new NotFoundException('Report not found');
-
-    return user;
+    return report;
   }
 
-  async remove(id: string) {
-    await this.reportsRepository.delete({ reportId: id });
+  async findAll() {
+    return this.reportRepo.findAll();
+  }
+
+  async delete(userId: string) {
+    await this.reportRepo.delete(userId);
   }
 }

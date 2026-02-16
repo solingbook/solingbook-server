@@ -37,6 +37,6 @@ export class ReportsController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.reportsService.remove(id);
+    return this.reportsService.delete(id);
   }
 }
