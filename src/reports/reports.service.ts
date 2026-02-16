@@ -7,7 +7,6 @@ import { TypeOrmUserRepository } from 'src/users/users.repository';
 import { UserRepository } from 'src/users/users.interface';
 import { TargetType } from './constant/targetType.enum';
 import { Transactional } from 'typeorm-transactional';
-import { delay } from 'src/util/time.util';
 
 @Injectable()
 export class ReportsService {
@@ -31,8 +30,6 @@ export class ReportsService {
 
     // TODO: Post 테이블 생성 후 Post도 검증하기
     // if (targetType === TargetType.POST){}
-
-    await delay(6000 * 10);
 
     return this.reportRepo.create(createReportDto);
   }
