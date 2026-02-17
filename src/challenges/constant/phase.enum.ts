@@ -1,0 +1,6 @@
+export enum Phase {
+  RECRUITING = 'RECRUITING',
+  ONGOING = 'ONGOING',
+  FINISHED = 'FINISHED',
+  CANCELLED = 'CANCELLED',
+}
