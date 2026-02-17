@@ -1,0 +1,6 @@
+export enum Status {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  GIVEUP = 'GIVEUP',
+  DISQUALIFIED = 'DISQUALIFIED',
+}

@@ -1,12 +1,23 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { TypeOrmChallengeRepository } from './challenges.repository';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  TypeOrmChallengeRepository,
+  TypeOrmChallengeResultRepository,
+} from './challenges.repository';
 import { CreateChallengeDto } from './dto/createChallenge.dto';
+import { CreateChallengeResultDto } from './dto/createChallengeResult.dto';
 
 @Injectable()
 export class ChallengesService {
   constructor(
     @Inject(TypeOrmChallengeRepository)
     private readonly challengeRepo: TypeOrmChallengeRepository,
+    @Inject(TypeOrmChallengeResultRepository)
+    private readonly resultRepo: TypeOrmChallengeResultRepository,
   ) {}
 
   async create(dto: CreateChallengeDto) {
@@ -37,5 +48,28 @@ export class ChallengesService {
     if (result.affected === 0) {
       throw new NotFoundException('Challenge not found');
     }
+  }
+
+  async findAllResults() {
+    return this.resultRepo.findAllResults();
+  }
+
+  async createResult(resultDto: CreateChallengeResultDto) {
+    const existingResult = await this.resultRepo.findByProgressId(
+      resultDto.progressId,
+    );
+
+    if (existingResult) {
+      throw new ConflictException(
+        'A challenge result already exists for this progressId',
+      );
+    }
+    return await this.resultRepo.createResult(resultDto);
+  }
+
+  async getResultByProgressId(progressId: string) {
+    const result = await this.resultRepo.findByProgressId(progressId);
+    if (!result) throw new NotFoundException('Challenge result not found');
+    return result;
   }
 }

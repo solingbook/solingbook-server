@@ -10,6 +10,8 @@ import {
 import { ChallengesService } from './challenges.service';
 import { CreateChallengeDto } from './dto/createChallenge.dto';
 import { Challenge } from './challenge.entity';
+import { ChallengeResults } from './challengeResult.entity';
+import { CreateChallengeResultDto } from './dto/createChallengeResult.dto';
 
 @Controller('challenges')
 export class ChallengesController {
@@ -18,6 +20,18 @@ export class ChallengesController {
   @Get()
   async findAll(): Promise<Challenge[]> {
     return this.challengeService.findAll();
+  }
+
+  @Get('results')
+  async findAllResults(): Promise<ChallengeResults[]> {
+    return this.challengeService.findAllResults();
+  }
+
+  @Get('results/:progressId')
+  async findByProgressId(
+    @Param('progressId', new ParseUUIDPipe()) progressId: string,
+  ): Promise<ChallengeResults> {
+    return this.challengeService.getResultByProgressId(progressId);
   }
 
   @Get(':id')
@@ -30,6 +44,11 @@ export class ChallengesController {
   @Post()
   async create(@Body() createChallengeDto: CreateChallengeDto) {
     return this.challengeService.create(createChallengeDto);
+  }
+
+  @Post('results')
+  async createResult(@Body() createResultDto: CreateChallengeResultDto) {
+    return this.challengeService.createResult(createResultDto);
   }
 
   @Delete(':id')
