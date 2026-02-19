@@ -5,11 +5,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { Phase } from './constant/phase.enum';
+import { Progress } from './progress.entity';
 
 @Entity('challenges')
 export class Challenge {
@@ -57,4 +59,7 @@ export class Challenge {
   @ManyToOne(() => User, (user) => user.challenges, { nullable: false })
   @JoinColumn({ name: 'creator_id' })
   creator: User;
+
+  @OneToMany(() => Progress, (progress) => progress.challengeId)
+  progres: Progress[];
 }
