@@ -3,7 +3,7 @@ import { IsDefined, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class CreateBookDto {
   @IsString()
   @IsOptional()
-  isbs: string;
+  isbn: string;
 
   @IsString()
   @IsDefined()

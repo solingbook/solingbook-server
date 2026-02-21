@@ -27,9 +27,9 @@ export class BooksController {
 
   @Get(':id')
   async findOne(
-    @Param('id', new ParseUUIDPipe()) reviewId: string,
+    @Param('id', new ParseUUIDPipe()) bookId: string,
   ): Promise<Book> {
-    return this.booksService.findOne(reviewId);
+    return this.booksService.findOne(bookId);
   }
 
   @Delete(':id')

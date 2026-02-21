@@ -1,3 +1,4 @@
+import { Challenge } from 'src/challenges/entity/challenge.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -12,7 +13,13 @@ export class Book {
   @PrimaryGeneratedColumn('uuid', { name: 'book_id' })
   bookId: string;
 
-  @Column({ name: 'isbn', type: 'varchar', unique: true, length: 20 })
+  @Column({
+    name: 'isbn',
+    type: 'varchar',
+    unique: true,
+    length: 20,
+    nullable: true,
+  })
   isbn: string;
 
   @Column({ name: 'title', type: 'varchar', length: 200 })
@@ -37,6 +44,6 @@ export class Book {
   updatedAt: Date;
 
   // TODO: Challenge 테이블 생기면 활성화시키기
-  // @OneToMany(() => Challenge, (report) => Challenge.chellengeId)
-  // challenges: Challenge[];
+  @OneToMany(() => Challenge, (challenge) => challenge.challengeId)
+  challenges: Challenge[];
 }
