@@ -4,7 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Status } from './constant/status.enum';
+import { ChallengeResultStatus } from '../constant/status.enum';
 
 @Entity('challenge_results')
 export class ChallengeResults {
@@ -18,10 +18,10 @@ export class ChallengeResults {
   @Column({
     name: 'result_status',
     type: 'enum',
-    enum: Status,
+    enum: ChallengeResultStatus,
     nullable: true,
   })
-  resultStatus: Status;
+  challengeResultStatus: ChallengeResultStatus;
 
   @Column({ name: 'earned_exp_points', type: 'integer', default: 0 })
   earnedExpPoints: number;

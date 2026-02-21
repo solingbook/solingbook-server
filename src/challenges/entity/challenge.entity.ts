@@ -10,8 +10,8 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
-import { Phase } from './constant/phase.enum';
 import { Progress } from './progress.entity';
+import { Phase } from '../constant/phase.enum';
 
 @Entity('challenges')
 export class Challenge {

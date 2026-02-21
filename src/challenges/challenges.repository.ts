@@ -2,12 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Challenge } from './challenge.entity';
 import { Repository } from 'typeorm';
-import {
-  ChallengeRepository,
-  ChallengeResultRepository,
-} from './challenges.interface';
-import { ChallengeResults } from './challengeResult.entity';
-import { CreateChallengeResultDto } from './dto/createChallengeResult.dto';
+import { ChallengeRepository } from './challenges.interface';
 
 @Injectable()
 export class TypeOrmChallengeRepository implements ChallengeRepository {
@@ -32,27 +27,5 @@ export class TypeOrmChallengeRepository implements ChallengeRepository {
 
   delete(challengeId: string) {
     return this.repo.delete({ challengeId });
-  }
-}
-
-@Injectable()
-export class TypeOrmChallengeResultRepository implements ChallengeResultRepository {
-  constructor(
-    @InjectRepository(ChallengeResults)
-    private readonly repo: Repository<ChallengeResults>,
-  ) {}
-
-  async createResult(
-    challengeResult: CreateChallengeResultDto,
-  ): Promise<ChallengeResults> {
-    const result = this.repo.create(challengeResult);
-    return this.repo.save(result);
-  }
-
-  async findByProgressId(progressId: string): Promise<ChallengeResults | null> {
-    return this.repo.findOneBy({ progressId });
-  }
-  async findAllResults(): Promise<ChallengeResults[]> {
-    return this.repo.find();
   }
 }

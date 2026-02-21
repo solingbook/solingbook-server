@@ -4,12 +4,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  TypeOrmChallengeRepository,
-  TypeOrmChallengeResultRepository,
-} from './challenges.repository';
+import { TypeOrmChallengeRepository } from './challenges.repository';
 import { CreateChallengeDto } from './dto/createChallenge.dto';
 import { CreateChallengeResultDto } from './dto/createChallengeResult.dto';
+import { TypeOrmChallengeResultRepository } from './challengeResults.repository';
 
 @Injectable()
 export class ChallengesService {

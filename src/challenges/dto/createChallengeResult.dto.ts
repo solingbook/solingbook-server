@@ -1,5 +1,5 @@
 import { IsEnum, IsInt, IsNotEmpty, IsUUID } from 'class-validator';
-import { Status } from '../constant/status.enum';
+import { ChallengeResultStatus } from '../constant/status.enum';
 import { Type } from 'class-transformer';
 
 export class CreateChallengeResultDto {
@@ -7,9 +7,9 @@ export class CreateChallengeResultDto {
   @IsNotEmpty()
   progressId: string;
 
-  @IsEnum(Status)
+  @IsEnum(ChallengeResultStatus)
   @IsNotEmpty()
-  resultStatus: Status;
+  challengeResultStatus: ChallengeResultStatus;
 
   @Type(() => Number)
   @IsInt()

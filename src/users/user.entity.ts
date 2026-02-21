@@ -66,5 +66,5 @@ export class User {
   challenges: Challenge[];
 
   @OneToMany(() => Progress, (progress) => progress.participantId)
-  progress: Progress[];
+  progresses: Progress[];
 }

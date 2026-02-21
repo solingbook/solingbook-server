@@ -18,7 +18,7 @@ import {
   DONE_POST_CHECK,
   DONE_READ_CHECK,
   DONE_TIME_CHECK,
-} from './constant/constraints';
+} from '../constant/constraints';
 
 @Entity('progress')
 @Unique('uq_progress_challenge', ['participantId', 'challengeId'])
@@ -32,9 +32,10 @@ export class Progress {
   progressId: string;
 
   @RelationId((progress: Progress) => progress.participant)
+  @Column({ name: 'participant_id', type: 'uuid' })
   participantId: string;
 
-  @RelationId((progress: Progress) => progress.challengeId)
+  @RelationId((progress: Progress) => progress.challenge)
   @Column({ name: 'challenge_id', type: 'uuid' })
   challengeId: string;
 
@@ -83,11 +84,11 @@ export class Progress {
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.progress, { nullable: false })
+  @ManyToOne(() => User, (user) => user.progresses, { nullable: false })
   @JoinColumn({ name: 'participant_id' })
   participant: User;
 
-  @ManyToOne(() => Challenge, (challenge) => challenge.progres, {
+  @ManyToOne(() => Challenge, (challenge) => challenge.progress, {
     nullable: false,
   })
   @JoinColumn({ name: 'challenge_id' })

@@ -1,4 +1,4 @@
-export enum Status {
+export enum ChallengeResultStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
   GIVEUP = 'GIVEUP',

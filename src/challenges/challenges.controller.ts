@@ -10,8 +10,8 @@ import {
 import { ChallengesService } from './challenges.service';
 import { CreateChallengeDto } from './dto/createChallenge.dto';
 import { Challenge } from './challenge.entity';
-import { ChallengeResults } from './challengeResult.entity';
 import { CreateChallengeResultDto } from './dto/createChallengeResult.dto';
+import { ChallengeResults } from './entity/challengeResult.entity';
 
 @Controller('challenges')
 export class ChallengesController {

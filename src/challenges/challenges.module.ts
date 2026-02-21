@@ -3,14 +3,13 @@ import { ChallengesController } from './challenges.controller';
 import { ChallengesService } from './challenges.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Challenge } from './challenge.entity';
-import {
-  TypeOrmChallengeRepository,
-  TypeOrmChallengeResultRepository,
-} from './challenges.repository';
-import { ChallengeResults } from './challengeResult.entity';
+import { TypeOrmChallengeRepository } from './challenges.repository';
+import { Progress } from './progress.entity';
+import { ChallengeResults } from './entity/challengeResult.entity';
+import { TypeOrmChallengeResultRepository } from './challengeResults.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Challenge, ChallengeResults])],
+  imports: [TypeOrmModule.forFeature([Challenge, ChallengeResults, Progress])],
   exports: [
     TypeOrmModule,
     TypeOrmChallengeRepository,
