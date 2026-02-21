@@ -1,5 +1,5 @@
 import { DeleteResult } from 'typeorm';
-import { Challenge } from './challenge.entity';
+import { Challenge } from './entity/challenge.entity';
 import { CreateChallengeDto } from './dto/createChallenge.dto';
 
 export interface ChallengeRepository {

@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { ChallengesController } from './challenges.controller';
 import { ChallengesService } from './challenges.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Challenge } from './challenge.entity';
 import { TypeOrmChallengeRepository } from './challenges.repository';
-import { Progress } from './progress.entity';
-import { ChallengeResults } from './entity/challengeResult.entity';
 import { TypeOrmChallengeResultRepository } from './challengeResults.repository';
+import { Challenge } from './entity/challenge.entity';
+import { ChallengeResults } from './entity/challengeResult.entity';
+import { Progress } from './entity/progress.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Challenge, ChallengeResults, Progress])],

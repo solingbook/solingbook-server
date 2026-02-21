@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Challenge } from './challenge.entity';
 import { Repository } from 'typeorm';
 import { ChallengeRepository } from './challenges.interface';
+import { Challenge } from './entity/challenge.entity';
 
 @Injectable()
 export class TypeOrmChallengeRepository implements ChallengeRepository {

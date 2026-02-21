@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 import { UserRole } from './constant/role.enum';
 import { Report } from 'src/reports/report.entity';
-import { Challenge } from 'src/challenges/challenge.entity';
-import { Progress } from 'src/challenges/progress.entity';
+import { Progress } from 'src/challenges/entity/progress.entity';
+import { Challenge } from 'src/challenges/entity/challenge.entity';
 
 @Entity('users')
 export class User {
