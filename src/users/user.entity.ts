@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 import { UserRole } from './constant/role.enum';
 import { Report } from 'src/reports/report.entity';
+import { Progress } from 'src/challenges/entity/progress.entity';
+import { Challenge } from 'src/challenges/entity/challenge.entity';
 
 @Entity('users')
 export class User {
@@ -59,4 +61,10 @@ export class User {
 
   @OneToMany(() => Report, (report) => report.reporterId)
   reports: Report[];
+
+  @OneToMany(() => Challenge, (challenge) => challenge.creatorId)
+  challenges: Challenge[];
+
+  @OneToMany(() => Progress, (progress) => progress.participantId)
+  progresses: Progress[];
 }

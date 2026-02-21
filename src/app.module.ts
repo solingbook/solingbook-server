@@ -12,6 +12,7 @@ import { ReportsModule } from './reports/reports.module';
 import { Report } from './reports/report.entity';
 import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
+import { ChallengesModule } from './challenges/challenges.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
 
     UsersModule,
     ReportsModule,
+    ChallengesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
