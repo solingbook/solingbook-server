@@ -9,6 +9,8 @@ import {
 import { UserRole } from './constant/role.enum';
 import { Report } from 'src/reports/report.entity';
 import { Review } from 'src/reviews/review.entity';
+import { Challenge } from 'src/challenges/entity/challenge.entity';
+import { Progress } from 'src/challenges/entity/progress.entity';
 
 @Entity('users')
 export class User {
@@ -63,4 +65,10 @@ export class User {
 
   @OneToMany(() => Review, (review) => review.reviewerId)
   reviews: Review[];
+
+  @OneToMany(() => Challenge, (challenge) => challenge.creatorId)
+  challenges: Challenge[];
+
+  @OneToMany(() => Progress, (progress) => progress.participantId)
+  progresses: Progress[];
 }

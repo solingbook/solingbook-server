@@ -14,6 +14,7 @@ import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { ReviewsModule } from './reviews/reviews.module';
 import { BooksModule } from './books/books.module';
+import { ChallengesModule } from './challenges/challenges.module';
 
 @Module({
   imports: [
@@ -50,10 +51,9 @@ import { BooksModule } from './books/books.module';
 
     UsersModule,
     ReportsModule,
-
     ReviewsModule,
-
     BooksModule,
+    ChallengesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
