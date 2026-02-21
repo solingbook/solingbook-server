@@ -1,11 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReportDto } from './dto/createReport.dto';
-import { PostsQueryDto } from './dto/gerReportQuery.dto';
+import { GetReportQueryDto } from './dto/gerReportQuery.dto';
 import { TypeOrmReportRepository } from './reports.repository';
 import { ReportRepository } from './reports.interface';
 import { TypeOrmUserRepository } from 'src/users/users.repository';
 import { UserRepository } from 'src/users/users.interface';
-import { TargetType } from './constant/targetType.enum';
+import { ReportTargetType } from './constant/reportTargetType.enum';
 import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class ReportsService {
   async create(createReportDto: CreateReportDto) {
     const { targetId, targetType } = createReportDto;
 
-    if (targetType === TargetType.USER) {
+    if (targetType === ReportTargetType.USER) {
       const user = await this.userRepo.findOneById(targetId);
 
       if (!user) throw new NotFoundException('User not found');
@@ -34,7 +34,7 @@ export class ReportsService {
     return this.reportRepo.create(createReportDto);
   }
 
-  async findOne(reportId: string, query: PostsQueryDto) {
+  async findOne(reportId: string, query: GetReportQueryDto) {
     const report = await this.reportRepo.findOne(reportId, query);
 
     if (!report) throw new NotFoundException('Report not found');
