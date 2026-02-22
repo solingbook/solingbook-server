@@ -5,7 +5,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { TargetType } from '../constant/targetType.enum';
+import { ReportTargetType } from '../constant/reportTargetType.enum';
 
 export class CreateReportDto {
   @IsUUID()
@@ -13,10 +13,10 @@ export class CreateReportDto {
   @IsNotEmpty()
   reporterId: string;
 
-  @IsEnum(TargetType)
+  @IsEnum(ReportTargetType)
   @IsDefined()
   @IsNotEmpty()
-  targetType: TargetType;
+  targetType: ReportTargetType;
 
   @IsUUID()
   @IsDefined()

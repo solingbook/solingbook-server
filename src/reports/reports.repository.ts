@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from './report.entity';
 import { ReportRepository } from './reports.interface';
 import { CreateReportDto } from './dto/createReport.dto';
-import { PostsQueryDto } from './dto/gerReportQuery.dto';
+import { GetReportQueryDto } from './dto/gerReportQuery.dto';
 
 @Injectable()
 export class TypeOrmReportRepository implements ReportRepository {
@@ -14,13 +14,13 @@ export class TypeOrmReportRepository implements ReportRepository {
     private readonly repo: Repository<Report>,
   ) {}
 
-  async create(report: CreateReportDto) {
-    const newReport = this.repo.create(report);
+  async create(createReportDto: CreateReportDto) {
+    const newReport = this.repo.create(createReportDto);
 
     return this.repo.save(newReport);
   }
 
-  async findOne(reportId: string, query: PostsQueryDto) {
+  async findOne(reportId: string, query: GetReportQueryDto) {
     const relations = query.withUserInfo ? ['reporter'] : [];
 
     return this.repo.findOne({ where: { reportId }, relations });

@@ -8,8 +8,8 @@ import {
   RelationId,
   Column,
 } from 'typeorm';
-import { TargetType } from './constant/targetType.enum';
 import { User } from 'src/users/user.entity';
+import { ReportTargetType } from './constant/reportTargetType.enum';
 
 @Entity('reports')
 export class Report {
@@ -20,8 +20,8 @@ export class Report {
   @Column({ name: 'reporter_id', type: 'uuid' })
   reporterId: string;
 
-  @Column({ name: 'target_type', type: 'enum', enum: TargetType })
-  targetType: TargetType;
+  @Column({ name: 'target_type', type: 'enum', enum: ReportTargetType })
+  targetType: ReportTargetType;
 
   @Column({ name: 'target_id', type: 'uuid' })
   targetId: string;

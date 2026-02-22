@@ -12,6 +12,8 @@ import { ReportsModule } from './reports/reports.module';
 import { Report } from './reports/report.entity';
 import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
+import { ReviewsModule } from './reviews/reviews.module';
+import { BooksModule } from './books/books.module';
 import { ChallengesModule } from './challenges/challenges.module';
 
 @Module({
@@ -49,6 +51,8 @@ import { ChallengesModule } from './challenges/challenges.module';
 
     UsersModule,
     ReportsModule,
+    ReviewsModule,
+    BooksModule,
     ChallengesModule,
   ],
   controllers: [AppController],

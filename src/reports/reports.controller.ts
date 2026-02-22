@@ -11,7 +11,7 @@ import {
 import { ReportsService } from './reports.service';
 import { Report } from './report.entity';
 import { CreateReportDto } from './dto/createReport.dto';
-import { PostsQueryDto } from './dto/gerReportQuery.dto';
+import { GetReportQueryDto } from './dto/gerReportQuery.dto';
 
 @Controller('reports')
 export class ReportsController {
@@ -25,7 +25,7 @@ export class ReportsController {
   @Get(':id')
   async findOne(
     @Param('id', new ParseUUIDPipe()) reportId: string,
-    @Query() query: PostsQueryDto,
+    @Query() query: GetReportQueryDto,
   ): Promise<Report> {
     return this.reportsService.findOne(reportId, query);
   }

@@ -1,4 +1,4 @@
-export enum TargetType {
+export enum ReportTargetType {
   POST = 'POST',
   USER = 'USER',
 }
