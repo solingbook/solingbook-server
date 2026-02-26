@@ -19,7 +19,7 @@ export class Review {
   @PrimaryGeneratedColumn('uuid', { name: 'review_id' })
   reviewId: string;
 
-  @RelationId((report: Review) => report.reviewer)
+  @RelationId((review: Review) => review.reviewer)
   @Column({ name: 'reviewer_id', type: 'uuid' })
   reviewerId: string;
 

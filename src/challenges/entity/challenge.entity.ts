@@ -6,12 +6,16 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { Progress } from './progress.entity';
 import { Phase } from '../constant/phase.enum';
+import { Verification } from 'src/verifications/entity/verification.entity';
+import { VerificationRule } from 'src/verifications/entity/verificationRule.entity';
+import { Book } from 'src/books/book.entity';
 
 @Entity('challenges')
 export class Challenge {
@@ -22,9 +26,8 @@ export class Challenge {
   @Column({ name: 'creator_id', type: 'uuid' })
   creatorId: string;
 
-  // TODO: book 테이블 생성 후 FK 설정, not null
-  //   @RelationId((challenge: Challenge) => challenge.bookId)
-  @Column({ name: 'book_id', type: 'uuid', nullable: true })
+  @RelationId((challenge: Challenge) => challenge.book)
+  @Column({ name: 'book_id', type: 'uuid' })
   bookId: string;
 
   @Column({ name: 'title', type: 'varchar', length: 200 })
@@ -60,6 +63,19 @@ export class Challenge {
   @JoinColumn({ name: 'creator_id' })
   creator: User;
 
-  @OneToMany(() => Progress, (progress) => progress.challengeId)
-  progress: Progress[];
+  @OneToMany(() => Progress, (progress) => progress.challenge)
+  progresses: Progress[];
+
+  @OneToMany(() => Verification, (verification) => verification.challenge)
+  verifications: Verification[];
+
+  @OneToOne(
+    () => VerificationRule,
+    (verificationRule) => verificationRule.challenge,
+  )
+  verificationRule: VerificationRule;
+
+  @ManyToOne(() => Book, (book) => book.challenges, { nullable: false })
+  @JoinColumn({ name: 'book_id' })
+  book: Book;
 }

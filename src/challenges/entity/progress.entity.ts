@@ -6,6 +6,8 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
   Unique,
@@ -19,6 +21,9 @@ import {
   DONE_READ_CHECK,
   DONE_TIME_CHECK,
 } from '../constant/constraints';
+import { Essay } from 'src/verifications/entity/essay.entity';
+import { ChallengePost } from 'src/verifications/entity/challengePost.entity';
+import { Verification } from 'src/verifications/entity/verification.entity';
 
 @Entity('progress')
 @Unique('uq_progress_challenge', ['participantId', 'challengeId'])
@@ -88,9 +93,18 @@ export class Progress {
   @JoinColumn({ name: 'participant_id' })
   participant: User;
 
-  @ManyToOne(() => Challenge, (challenge) => challenge.progress, {
+  @ManyToOne(() => Challenge, (challenge) => challenge.progresses, {
     nullable: false,
   })
   @JoinColumn({ name: 'challenge_id' })
   challenge: Challenge;
+
+  @OneToOne(() => Essay, (essay) => essay.progress)
+  essay: Essay;
+
+  @OneToMany(() => ChallengePost, (challengePost) => challengePost.progress)
+  challengePosts: ChallengePost[];
+
+  @OneToMany(() => Verification, (verification) => verification.progress)
+  verifications: Verification[];
 }
