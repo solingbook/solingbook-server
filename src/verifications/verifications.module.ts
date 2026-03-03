@@ -1,20 +1,24 @@
 import { Module } from '@nestjs/common';
-import { VerificationsController } from './verifications.controller';
-import { VerificationsService } from './verifications.service';
+import { VerificationRulesController } from './verificationRules.controller';
+import { VerificationRulesService } from './verificationRules.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Essay } from './entity/essay.entity';
 import { ChallengePost } from './entity/challengePost.entity';
 import { Verification } from './entity/verification.entity';
 import { VerificationRule } from './entity/verificationRule.entity';
+import { TypeOrmVerificationRuleRepository } from './verificationRules.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Essay]),
-    TypeOrmModule.forFeature([ChallengePost]),
-    TypeOrmModule.forFeature([Verification]),
-    TypeOrmModule.forFeature([VerificationRule]),
+    TypeOrmModule.forFeature([
+      Essay,
+      ChallengePost,
+      Verification,
+      VerificationRule,
+    ]),
   ],
-  controllers: [VerificationsController],
-  providers: [VerificationsService],
+  exports: [TypeOrmModule, TypeOrmVerificationRuleRepository],
+  providers: [VerificationRulesService, TypeOrmVerificationRuleRepository],
+  controllers: [VerificationRulesController],
 })
-export class VerificationsModule {}
+export class VerificationRulesModule {}

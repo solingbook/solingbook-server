@@ -6,7 +6,6 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -15,22 +14,23 @@ export class VerificationRule {
   @PrimaryGeneratedColumn('uuid', { name: 'verification_rule_id' })
   verificationRuleId: string;
 
-  @RelationId(
-    (verificationRule: VerificationRule) => verificationRule.challenge,
-  )
+  @Column({ name: 'challenge_id', type: 'uuid' })
   challengeId: string;
 
-  @Column({ name: 'daily_min_mins', type: 'smallint', nullable: true })
-  dailyMinMins: number;
+  @Column({ name: 'timer_daily_minutes', type: 'smallint' })
+  timerDailyMinutes: number;
 
-  @Column({ name: 'target_days', type: 'smallint', nullable: true })
-  targetDays: number;
+  @Column({ name: 'timer_required_days', type: 'smallint' })
+  timerRequiredDays: number;
 
-  @Column({ name: 'post_required', type: 'boolean', default: false })
-  postRequired: boolean;
+  @Column({ name: 'post_enabled', type: 'boolean', default: false })
+  postEnabled: boolean;
 
-  @Column({ name: 'essay_required', type: 'boolean', default: false })
-  essayRequired: boolean;
+  @Column({ name: 'post_required_count', type: 'smallint', nullable: true })
+  postRequiredCount: number;
+
+  @Column({ name: 'essay_enabled', type: 'boolean', default: false })
+  essayEnabled: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
