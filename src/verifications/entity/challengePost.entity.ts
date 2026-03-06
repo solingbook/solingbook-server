@@ -21,6 +21,7 @@ export class ChallengePost {
   writerId: string;
 
   @RelationId((challengePost: ChallengePost) => challengePost.progress)
+  @Column({ name: 'progress_id', type: 'uuid' })
   progressId: string;
 
   @Column({ name: 'title', type: 'varchar', length: 200 })
@@ -29,10 +30,15 @@ export class ChallengePost {
   @Column({ name: 'content', type: 'text' })
   content: string;
 
-  @Column({ name: 'page_no', type: 'smallint' })
+  @Column({ name: 'page_no', type: 'smallint', nullable: true })
   pageNo: number;
 
-  @Column({ name: 'post_image_url', type: 'varchar', length: 500 })
+  @Column({
+    name: 'post_image_url',
+    type: 'varchar',
+    length: 500,
+    nullable: true,
+  })
   postImageUrl: string;
 
   @CreateDateColumn({ name: 'created_at' })

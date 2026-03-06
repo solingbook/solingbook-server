@@ -7,6 +7,12 @@ import { ChallengePost } from './entity/challengePost.entity';
 import { Verification } from './entity/verification.entity';
 import { VerificationRule } from './entity/verificationRule.entity';
 import { TypeOrmVerificationRuleRepository } from './verificationRules.repository';
+import { TypeOrmChallengePostRepository } from './challengePosts.repository';
+import { ChallengePostsController } from './challengePosts.controller';
+import { ChallengePostsService } from './challengePosts.service';
+import { TypeOrmEssayRepository } from './essays.repository';
+import { EssaysController } from './essays.controller';
+import { EssaysService } from './essays.service';
 
 @Module({
   imports: [
@@ -15,10 +21,27 @@ import { TypeOrmVerificationRuleRepository } from './verificationRules.repositor
       ChallengePost,
       Verification,
       VerificationRule,
+      ChallengePost,
     ]),
   ],
-  exports: [TypeOrmModule, TypeOrmVerificationRuleRepository],
-  providers: [VerificationRulesService, TypeOrmVerificationRuleRepository],
-  controllers: [VerificationRulesController],
+  exports: [
+    TypeOrmModule,
+    TypeOrmVerificationRuleRepository,
+    TypeOrmChallengePostRepository,
+    TypeOrmEssayRepository,
+  ],
+  providers: [
+    VerificationRulesService,
+    ChallengePostsService,
+    EssaysService,
+    TypeOrmVerificationRuleRepository,
+    TypeOrmChallengePostRepository,
+    TypeOrmEssayRepository,
+  ],
+  controllers: [
+    VerificationRulesController,
+    ChallengePostsController,
+    EssaysController,
+  ],
 })
 export class VerificationRulesModule {}

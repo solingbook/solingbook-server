@@ -7,6 +7,7 @@ import {
   IsUUID,
   Min,
 } from 'class-validator';
+import { transformBoolean } from 'src/util/classValidator.util';
 
 export class CreateVerificationRuleDto {
   @IsUUID()
@@ -21,7 +22,7 @@ export class CreateVerificationRuleDto {
   @IsInt()
   timerRequiredDays: number;
 
-  @Transform(({ value }) => value === true || value === 'true')
+  @Transform(transformBoolean)
   @IsBoolean()
   postEnabled: boolean;
 
@@ -31,7 +32,7 @@ export class CreateVerificationRuleDto {
   @Min(1)
   postRequiredCount: number;
 
-  @Transform(({ value }) => value === true || value === 'true')
+  @Transform(transformBoolean)
   @IsBoolean()
   essayEnabled: boolean;
 }

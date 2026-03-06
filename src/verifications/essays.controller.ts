@@ -1,0 +1,39 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
+import { Essay } from './entity/essay.entity';
+import { CreateEssayDto } from './dto/createEssay.dto';
+import { EssaysService } from './essays.service';
+
+@Controller('essays')
+export class EssaysController {
+  constructor(private readonly essaysService: EssaysService) {}
+
+  @Get()
+  async findAll(): Promise<Essay[]> {
+    return this.essaysService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id', new ParseUUIDPipe()) essayId: string,
+  ): Promise<Essay> {
+    return this.essaysService.findOne(essayId);
+  }
+
+  @Post()
+  async create(@Body() createEssayDto: CreateEssayDto) {
+    return this.essaysService.create(createEssayDto);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id', new ParseUUIDPipe()) essayId: string) {
+    return this.essaysService.delete(essayId);
+  }
+}

@@ -22,6 +22,7 @@ export class Essay {
   writerId: string;
 
   @RelationId((essay: Essay) => essay.progress)
+  @Column({ name: 'progress_id', type: 'uuid' })
   progressId: string;
 
   @Column({ name: 'title', type: 'varchar', length: 200 })
