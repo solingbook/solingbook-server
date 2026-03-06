@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { VerificationRule } from './entity/verificationRule.entity';
 import { Repository } from 'typeorm';
-import { VerificationRuleRepository } from './verificationRules.interface';
-import { CreateVerificationRuleDto } from './dto/createVerificationRule.dto';
+import { VerificationRuleRepository } from '../interfaces/verificationRules.interface';
+import { VerificationRule } from '../entity/verificationRule.entity';
+import { CreateVerificationRuleDto } from '../dto/createVerificationRule.dto';
 
 @Injectable()
 export class TypeOrmVerificationRuleRepository implements VerificationRuleRepository {

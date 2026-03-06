@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { VerificationRulesController } from './verificationRules.controller';
-import { VerificationRulesService } from './verificationRules.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Essay } from './entity/essay.entity';
 import { ChallengePost } from './entity/challengePost.entity';
 import { Verification } from './entity/verification.entity';
 import { VerificationRule } from './entity/verificationRule.entity';
-import { TypeOrmVerificationRuleRepository } from './verificationRules.repository';
-import { TypeOrmChallengePostRepository } from './challengePosts.repository';
-import { ChallengePostsController } from './challengePosts.controller';
-import { ChallengePostsService } from './challengePosts.service';
-import { TypeOrmEssayRepository } from './essays.repository';
-import { EssaysController } from './essays.controller';
-import { EssaysService } from './essays.service';
+import { TypeOrmVerificationRuleRepository } from './repositories/verificationRules.repository';
+import { TypeOrmChallengePostRepository } from './repositories/challengePosts.repository';
+import { TypeOrmEssayRepository } from './repositories/essays.repository';
+import { VerificationRulesService } from './services/verificationRules.service';
+import { ChallengePostsService } from './services/challengePosts.service';
+import { EssaysService } from './services/essays.service';
+import { VerificationRulesController } from './controllers/verificationRules.controller';
+import { ChallengePostsController } from './controllers/challengePosts.controller';
+import { EssaysController } from './controllers/essays.controller';
 
 @Module({
   imports: [

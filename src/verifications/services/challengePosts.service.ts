@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { TypeOrmChallengePostRepository } from './challengePosts.repository';
-import { ChallengePostRepository } from './challengePosts.interface';
-import { CreateChallengePostDto } from './dto/createChallengePost.dto';
+import { TypeOrmChallengePostRepository } from '../repositories/challengePosts.repository';
+import { ChallengePostRepository } from '../interfaces/challengePosts.interface';
+import { CreateChallengePostDto } from '../dto/createChallengePost.dto';
 
 @Injectable()
 export class ChallengePostsService {

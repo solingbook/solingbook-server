@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { TypeOrmEssayRepository } from './essays.repository';
-import { CreateEssayDto } from './dto/createEssay.dto';
-import { EssayRepository } from './essays.interface';
+import { TypeOrmEssayRepository } from '../repositories/essays.repository';
+import { EssayRepository } from '../interfaces/essays.interface';
+import { CreateEssayDto } from '../dto/createEssay.dto';
 
 @Injectable()
 export class EssaysService {

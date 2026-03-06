@@ -4,9 +4,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { TypeOrmVerificationRuleRepository } from './verificationRules.repository';
-import { VerificationRuleRepository } from './verificationRules.interface';
-import { CreateVerificationRuleDto } from './dto/createVerificationRule.dto';
+import { TypeOrmVerificationRuleRepository } from '../repositories/verificationRules.repository';
+import { VerificationRuleRepository } from '../interfaces/verificationRules.interface';
+import { CreateVerificationRuleDto } from '../dto/createVerificationRule.dto';
 
 @Injectable()
 export class VerificationRulesService {

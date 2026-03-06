@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Essay } from './entity/essay.entity';
 import { Repository } from 'typeorm';
-import { CreateEssayDto } from './dto/createEssay.dto';
-import { EssayRepository } from './essays.interface';
+import { EssayRepository } from '../interfaces/essays.interface';
+import { Essay } from '../entity/essay.entity';
+import { CreateEssayDto } from '../dto/createEssay.dto';
 
 @Injectable()
 export class TypeOrmEssayRepository implements EssayRepository {

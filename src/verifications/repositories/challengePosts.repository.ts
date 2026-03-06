@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ChallengePost } from './entity/challengePost.entity';
 import { Repository } from 'typeorm';
-import { CreateChallengePostDto } from './dto/createChallengePost.dto';
-import { ChallengePostRepository } from './challengePosts.interface';
+import { ChallengePostRepository } from '../interfaces/challengePosts.interface';
+import { ChallengePost } from '../entity/challengePost.entity';
+import { CreateChallengePostDto } from '../dto/createChallengePost.dto';
 
 @Injectable()
 export class TypeOrmChallengePostRepository implements ChallengePostRepository {

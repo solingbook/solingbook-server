@@ -7,9 +7,9 @@ import {
   ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
-import { Essay } from './entity/essay.entity';
-import { CreateEssayDto } from './dto/createEssay.dto';
-import { EssaysService } from './essays.service';
+import { EssaysService } from '../services/essays.service';
+import { Essay } from '../entity/essay.entity';
+import { CreateEssayDto } from '../dto/createEssay.dto';
 
 @Controller('essays')
 export class EssaysController {

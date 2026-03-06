@@ -7,9 +7,9 @@ import {
   ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
-import { VerificationRulesService } from './verificationRules.service';
-import { VerificationRule } from './entity/verificationRule.entity';
-import { CreateVerificationRuleDto } from './dto/createVerificationRule.dto';
+import { VerificationRulesService } from '../services/verificationRules.service';
+import { VerificationRule } from '../entity/verificationRule.entity';
+import { CreateVerificationRuleDto } from '../dto/createVerificationRule.dto';
 
 @Controller('verificationRules')
 export class VerificationRulesController {

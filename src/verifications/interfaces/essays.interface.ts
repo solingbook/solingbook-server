@@ -1,6 +1,6 @@
 import { DeleteResult } from 'typeorm';
-import { CreateEssayDto } from './dto/createEssay.dto';
-import { Essay } from './entity/essay.entity';
+import { CreateEssayDto } from '../dto/createEssay.dto';
+import { Essay } from '../entity/essay.entity';
 
 export interface EssayRepository {
   create(createEssayDto: CreateEssayDto): Promise<Essay>;

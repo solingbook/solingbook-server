@@ -1,6 +1,6 @@
 import { DeleteResult } from 'typeorm';
-import { CreateVerificationRuleDto } from './dto/createVerificationRule.dto';
-import { VerificationRule } from './entity/verificationRule.entity';
+import { CreateVerificationRuleDto } from '../dto/createVerificationRule.dto';
+import { VerificationRule } from '../entity/verificationRule.entity';
 
 export interface VerificationRuleRepository {
   create(

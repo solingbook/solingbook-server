@@ -7,9 +7,9 @@ import {
   ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
-import { ChallengePostsService } from './challengePosts.service';
-import { ChallengePost } from './entity/challengePost.entity';
-import { CreateChallengePostDto } from './dto/createChallengePost.dto';
+import { ChallengePostsService } from '../services/challengePosts.service';
+import { ChallengePost } from '../entity/challengePost.entity';
+import { CreateChallengePostDto } from '../dto/createChallengePost.dto';
 
 @Controller('challengePosts')
 export class ChallengePostsController {
