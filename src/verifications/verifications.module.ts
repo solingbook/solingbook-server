@@ -44,4 +44,4 @@ import { EssaysController } from './controllers/essays.controller';
     EssaysController,
   ],
 })
-export class VerificationRulesModule {}
+export class VerificationModule {}
