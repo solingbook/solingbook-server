@@ -13,9 +13,9 @@ export class TypeOrmEssayRepository implements EssayRepository {
   ) {}
 
   async create(createEssayDto: CreateEssayDto) {
-    const newChallengePost = this.repo.create(createEssayDto);
+    const newEssay = this.repo.create(createEssayDto);
 
-    return this.repo.save(newChallengePost);
+    return this.repo.save(newEssay);
   }
 
   async findOneById(essayId: string): Promise<Essay | null> {

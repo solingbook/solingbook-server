@@ -10,6 +10,7 @@ export class ChallengePostsService {
     private readonly challengePostRepo: ChallengePostRepository,
   ) {}
 
+  // TODO: VerificationService 연동 -> 공통 인증 기록 생성 및 챌린지 포스트 연결
   async create(createChallengePostDto: CreateChallengePostDto) {
     return this.challengePostRepo.create(createChallengePostDto);
   }

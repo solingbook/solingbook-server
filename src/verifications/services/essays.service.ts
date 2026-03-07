@@ -10,16 +10,17 @@ export class EssaysService {
     private readonly essayRepo: EssayRepository,
   ) {}
 
+  // TODO: VerificationService 연동 -> 인증 기록 생성 및 에세이 연결
   async create(createEssayDto: CreateEssayDto) {
     return this.essayRepo.create(createEssayDto);
   }
 
   async findOne(essayId: string) {
-    const challengePost = await this.essayRepo.findOneById(essayId);
+    const essay = await this.essayRepo.findOneById(essayId);
 
-    if (!challengePost) throw new NotFoundException('Essay not found');
+    if (!essay) throw new NotFoundException('Essay not found');
 
-    return challengePost;
+    return essay;
   }
 
   async findAll() {
