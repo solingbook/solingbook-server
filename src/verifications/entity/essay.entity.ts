@@ -8,7 +8,6 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -17,11 +16,9 @@ export class Essay {
   @PrimaryGeneratedColumn('uuid', { name: 'essay_id' })
   essayId: string;
 
-  @RelationId((essay: Essay) => essay.writer)
   @Column({ name: 'writer_id', type: 'uuid' })
   writerId: string;
 
-  @RelationId((essay: Essay) => essay.progress)
   @Column({ name: 'progress_id', type: 'uuid' })
   progressId: string;
 

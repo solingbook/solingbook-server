@@ -7,7 +7,6 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { VerificationType } from '../constant/verificationType.enum';
@@ -17,10 +16,10 @@ export class Verification {
   @PrimaryGeneratedColumn('uuid', { name: 'verification_id' })
   verificationId: string;
 
-  @RelationId((verification: Verification) => verification.progress)
+  @Column({ name: 'progress_id', type: 'uuid' })
   progressId: string;
 
-  @RelationId((verification: Verification) => verification.challenge)
+  @Column({ name: 'challenge_id', type: 'uuid' })
   challengeId: string;
 
   @Column({

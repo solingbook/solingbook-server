@@ -9,7 +9,6 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
@@ -36,11 +35,9 @@ export class Progress {
   @PrimaryGeneratedColumn('uuid', { name: 'progress_id' })
   progressId: string;
 
-  @RelationId((progress: Progress) => progress.participant)
   @Column({ name: 'participant_id', type: 'uuid' })
   participantId: string;
 
-  @RelationId((progress: Progress) => progress.challenge)
   @Column({ name: 'challenge_id', type: 'uuid' })
   challengeId: string;
 

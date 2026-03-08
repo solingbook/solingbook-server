@@ -8,7 +8,6 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { Progress } from './progress.entity';
@@ -22,11 +21,9 @@ export class Challenge {
   @PrimaryGeneratedColumn('uuid', { name: 'challenge_id' })
   challengeId: string;
 
-  @RelationId((challenge: Challenge) => challenge.creator)
   @Column({ name: 'creator_id', type: 'uuid' })
   creatorId: string;
 
-  @RelationId((challenge: Challenge) => challenge.book)
   @Column({ name: 'book_id', type: 'uuid' })
   bookId: string;
 
