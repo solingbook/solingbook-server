@@ -16,6 +16,9 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { BooksModule } from './books/books.module';
 import { ChallengesModule } from './challenges/challenges.module';
 import { VerificationModule } from './verifications/verifications.module';
+import { ServiceLogsModule } from './service-logs/service-logs.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ServiceLogInterceptor } from './global/interceptors/serviceLog.interceptor';
 
 @Module({
   imports: [
@@ -50,14 +53,17 @@ import { VerificationModule } from './verifications/verifications.module';
       },
     }),
 
+    EventEmitterModule.forRoot(),
+
     UsersModule,
     ReportsModule,
     ReviewsModule,
     BooksModule,
     ChallengesModule,
     VerificationModule,
+    ServiceLogsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ServiceLogInterceptor],
 })
 export class AppModule {}
