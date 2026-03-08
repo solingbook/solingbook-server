@@ -1,4 +1,10 @@
-import { IsDefined, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsDefined,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateBookDto {
   @IsString()
@@ -16,5 +22,10 @@ export class CreateBookDto {
   author: string;
 
   @IsOptional()
+  @IsInt()
   totalPages: number;
+
+  @IsOptional()
+  @IsString()
+  thumbImgUrl: string;
 }

@@ -10,10 +10,10 @@ export class BooksService {
     private readonly bookRepo: BookRepository,
   ) {}
 
-  async create(createReviewDto: CreateBookDto) {
+  async create(createBookDto: CreateBookDto) {
     // TODO: ISBN 조회 API 연동하기
 
-    return this.bookRepo.create(createReviewDto);
+    return this.bookRepo.create(createBookDto);
   }
 
   async findOne(bookId: string) {

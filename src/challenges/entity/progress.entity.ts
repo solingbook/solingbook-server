@@ -6,8 +6,9 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
@@ -19,6 +20,8 @@ import {
   DONE_READ_CHECK,
   DONE_TIME_CHECK,
 } from '../constant/constraints';
+import { Essay } from 'src/verifications/entity/essay.entity';
+import { ChallengePost } from 'src/verifications/entity/challengePost.entity';
 
 @Entity('progress')
 @Unique('uq_progress_challenge', ['participantId', 'challengeId'])
@@ -31,11 +34,9 @@ export class Progress {
   @PrimaryGeneratedColumn('uuid', { name: 'progress_id' })
   progressId: string;
 
-  @RelationId((progress: Progress) => progress.participant)
   @Column({ name: 'participant_id', type: 'uuid' })
   participantId: string;
 
-  @RelationId((progress: Progress) => progress.challenge)
   @Column({ name: 'challenge_id', type: 'uuid' })
   challengeId: string;
 
@@ -88,9 +89,15 @@ export class Progress {
   @JoinColumn({ name: 'participant_id' })
   participant: User;
 
-  @ManyToOne(() => Challenge, (challenge) => challenge.progress, {
+  @ManyToOne(() => Challenge, (challenge) => challenge.progresses, {
     nullable: false,
   })
   @JoinColumn({ name: 'challenge_id' })
   challenge: Challenge;
+
+  @OneToOne(() => Essay, (essay) => essay.progress)
+  essay: Essay;
+
+  @OneToMany(() => ChallengePost, (challengePost) => challengePost.progress)
+  challengePosts: ChallengePost[];
 }

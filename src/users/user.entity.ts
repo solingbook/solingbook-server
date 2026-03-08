@@ -11,13 +11,15 @@ import { Report } from 'src/reports/report.entity';
 import { Review } from 'src/reviews/review.entity';
 import { Challenge } from 'src/challenges/entity/challenge.entity';
 import { Progress } from 'src/challenges/entity/progress.entity';
+import { Essay } from 'src/verifications/entity/essay.entity';
+import { ChallengePost } from 'src/verifications/entity/challengePost.entity';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid', { name: 'user_id' })
   userId: string;
 
-  @Column({ name: 'email', type: 'varchar', unique: true, length: 255 })
+  @Column({ name: 'email', type: 'varchar', unique: true, length: 100 })
   email: string;
 
   @Column({ name: 'username', type: 'varchar', unique: true, length: 50 })
@@ -60,15 +62,21 @@ export class User {
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
   updatedAt: Date;
 
-  @OneToMany(() => Report, (report) => report.reporterId)
+  @OneToMany(() => Report, (report) => report.reporter)
   reports: Report[];
 
-  @OneToMany(() => Review, (review) => review.reviewerId)
+  @OneToMany(() => Review, (review) => review.reviewer)
   reviews: Review[];
 
-  @OneToMany(() => Challenge, (challenge) => challenge.creatorId)
+  @OneToMany(() => Challenge, (challenge) => challenge.creator)
   challenges: Challenge[];
 
-  @OneToMany(() => Progress, (progress) => progress.participantId)
+  @OneToMany(() => Progress, (progress) => progress.participant)
   progresses: Progress[];
+
+  @OneToMany(() => Essay, (essay) => essay.writer)
+  essays: Essay[];
+
+  @OneToMany(() => ChallengePost, (challengePost) => challengePost.writer)
+  challengePosts: ChallengePost[];
 }

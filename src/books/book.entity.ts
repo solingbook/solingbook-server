@@ -43,7 +43,6 @@ export class Book {
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
   updatedAt: Date;
 
-  // TODO: Challenge 테이블 생기면 활성화시키기
   @OneToMany(() => Challenge, (challenge) => challenge.challengeId)
   challenges: Challenge[];
 }

@@ -5,7 +5,6 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
-  RelationId,
   Column,
 } from 'typeorm';
 import { User } from 'src/users/user.entity';
@@ -16,7 +15,6 @@ export class Report {
   @PrimaryGeneratedColumn('uuid', { name: 'report_id' })
   reportId: string;
 
-  @RelationId((report: Report) => report.reporter)
   @Column({ name: 'reporter_id', type: 'uuid' })
   reporterId: string;
 
