@@ -43,6 +43,6 @@ export class Book {
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
   updatedAt: Date;
 
-  @OneToMany(() => Challenge, (challenge) => challenge.book)
+  @OneToMany(() => Challenge, (challenge) => challenge.challengeId)
   challenges: Challenge[];
 }
