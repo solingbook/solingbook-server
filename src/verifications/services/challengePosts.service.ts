@@ -15,8 +15,9 @@ export class ChallengePostsService {
     return this.challengePostRepo.create(createChallengePostDto);
   }
 
-  async findOne(postId: string) {
-    const challengePost = await this.challengePostRepo.findOneById(postId);
+  async findOne(challengePostId: string) {
+    const challengePost =
+      await this.challengePostRepo.findOneById(challengePostId);
 
     if (!challengePost) throw new NotFoundException('Challenge Post not found');
 
@@ -27,8 +28,8 @@ export class ChallengePostsService {
     return this.challengePostRepo.findAll();
   }
 
-  async delete(postId: string) {
-    const result = await this.challengePostRepo.delete(postId);
+  async delete(challengePostId: string) {
+    const result = await this.challengePostRepo.delete(challengePostId);
 
     if (result.affected === 0) {
       throw new NotFoundException('Challenge Post not found');

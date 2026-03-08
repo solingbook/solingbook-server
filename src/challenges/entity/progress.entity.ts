@@ -22,7 +22,6 @@ import {
 } from '../constant/constraints';
 import { Essay } from 'src/verifications/entity/essay.entity';
 import { ChallengePost } from 'src/verifications/entity/challengePost.entity';
-import { Verification } from 'src/verifications/entity/verification.entity';
 
 @Entity('progress')
 @Unique('uq_progress_challenge', ['participantId', 'challengeId'])
@@ -101,7 +100,4 @@ export class Progress {
 
   @OneToMany(() => ChallengePost, (challengePost) => challengePost.progress)
   challengePosts: ChallengePost[];
-
-  @OneToMany(() => Verification, (verification) => verification.progress)
-  verifications: Verification[];
 }

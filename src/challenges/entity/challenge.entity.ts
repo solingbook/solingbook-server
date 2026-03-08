@@ -12,7 +12,6 @@ import {
 } from 'typeorm';
 import { Progress } from './progress.entity';
 import { Phase } from '../constant/phase.enum';
-import { Verification } from 'src/verifications/entity/verification.entity';
 import { VerificationRule } from 'src/verifications/entity/verificationRule.entity';
 import { Book } from 'src/books/book.entity';
 
@@ -62,9 +61,6 @@ export class Challenge {
 
   @OneToMany(() => Progress, (progress) => progress.challenge)
   progresses: Progress[];
-
-  @OneToMany(() => Verification, (verification) => verification.challenge)
-  verifications: Verification[];
 
   @OneToOne(
     () => VerificationRule,

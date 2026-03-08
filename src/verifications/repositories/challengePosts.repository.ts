@@ -18,8 +18,8 @@ export class TypeOrmChallengePostRepository implements ChallengePostRepository {
     return this.repo.save(newChallengePost);
   }
 
-  async findOneById(postId: string): Promise<ChallengePost | null> {
-    return this.repo.findOneBy({ postId });
+  async findOneById(challengePostId: string): Promise<ChallengePost | null> {
+    return this.repo.findOneBy({ challengePostId });
   }
 
   async findOneByWriterId(writerId: string): Promise<ChallengePost | null> {
@@ -30,7 +30,7 @@ export class TypeOrmChallengePostRepository implements ChallengePostRepository {
     return this.repo.find();
   }
 
-  delete(postId: string) {
-    return this.repo.delete({ postId });
+  delete(challengePostId: string) {
+    return this.repo.delete({ challengePostId });
   }
 }

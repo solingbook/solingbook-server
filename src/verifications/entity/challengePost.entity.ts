@@ -12,8 +12,8 @@ import {
 
 @Entity('challenge_posts')
 export class ChallengePost {
-  @PrimaryGeneratedColumn('uuid', { name: 'post_id' })
-  postId: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'challenge_post_id' })
+  challengePostId: string;
 
   @Column({ name: 'writer_id', type: 'uuid' })
   writerId: string;

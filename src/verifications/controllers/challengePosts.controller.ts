@@ -22,9 +22,9 @@ export class ChallengePostsController {
 
   @Get(':id')
   async findOne(
-    @Param('id', new ParseUUIDPipe()) postId: string,
+    @Param('id', new ParseUUIDPipe()) challengePostId: string,
   ): Promise<ChallengePost> {
-    return this.challengePostsService.findOne(postId);
+    return this.challengePostsService.findOne(challengePostId);
   }
 
   @Post()
@@ -33,7 +33,7 @@ export class ChallengePostsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', new ParseUUIDPipe()) postId: string) {
-    return this.challengePostsService.delete(postId);
+  async delete(@Param('id', new ParseUUIDPipe()) challengePostId: string) {
+    return this.challengePostsService.delete(challengePostId);
   }
 }

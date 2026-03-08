@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Essay } from './entity/essay.entity';
 import { ChallengePost } from './entity/challengePost.entity';
-import { Verification } from './entity/verification.entity';
 import { VerificationRule } from './entity/verificationRule.entity';
 import { TypeOrmVerificationRuleRepository } from './repositories/verificationRules.repository';
 import { TypeOrmChallengePostRepository } from './repositories/challengePosts.repository';
@@ -19,7 +18,6 @@ import { EssaysController } from './controllers/essays.controller';
     TypeOrmModule.forFeature([
       Essay,
       ChallengePost,
-      Verification,
       VerificationRule,
       ChallengePost,
     ]),
