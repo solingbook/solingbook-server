@@ -1,11 +1,9 @@
-import { plainToInstance, Type } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import {
-  IsBoolean,
   IsBooleanString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
-  IsNumberString,
   IsString,
   Max,
   Min,
@@ -31,6 +29,10 @@ class EnvironmentVariables {
   @Max(65535)
   @IsNotEmpty()
   PORT: number;
+
+  @IsString()
+  @IsNotEmpty()
+  JWT_SECRET: string;
 
   @IsString()
   @IsNotEmpty()

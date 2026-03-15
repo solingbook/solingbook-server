@@ -2,6 +2,7 @@ import {
   IsDefined,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
@@ -32,6 +33,10 @@ export class CreateApiLogDto {
   @IsDefined()
   @IsNotEmpty()
   responseTimeMs: number;
+
+  @IsString()
+  @IsOptional()
+  data?: string;
 
   @IsString()
   @IsDefined()

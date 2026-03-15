@@ -1,5 +1,8 @@
 export type EnvConfigType = {
+  HOST: string;
   PORT: number;
+  JWT_SECRET: string;
+
   DB_HOST: string;
   DB_PORT: number;
   DB_USER: string;

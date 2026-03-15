@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from './user.entity';
@@ -13,21 +13,24 @@ export class TypeOrmUserRepository implements UserRepository {
     private readonly repo: Repository<User>,
   ) {}
 
-  async create(user: CreateUserDto) {
+  async createUser(user: CreateUserDto): Promise<User> {
     const newUser = this.repo.create(user);
-
     return this.repo.save(newUser);
   }
 
-  async findOneById(userId: string): Promise<User | null> {
-    return this.repo.findOneBy({ userId });
+  async findUser(options: FindManyOptions<User>) {
+    return this.repo.find(options);
   }
 
   async findAll() {
     return this.repo.find();
   }
 
-  delete(userId: string) {
+  async setTokens(userId: string, at: string, rt: string) {
+    return this.repo.update({ userId }, { at, rt });
+  }
+
+  async deleteUser(userId: string) {
     return this.repo.delete({ userId });
   }
 }

@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { TypeOrmUserRepository } from './users.repository';
 
+// TODO: repo를 import하지 말고 service를 import하는 구조로 통일하기
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  exports: [TypeOrmModule, TypeOrmUserRepository],
+  exports: [TypeOrmModule, TypeOrmUserRepository, UsersService],
   providers: [UsersService, TypeOrmUserRepository],
   controllers: [UsersController],
 })
