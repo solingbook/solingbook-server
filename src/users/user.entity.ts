@@ -22,8 +22,8 @@ export class User {
   @Column({ name: 'email', type: 'varchar', unique: true, length: 100 })
   email: string;
 
-  @Column({ name: 'username', type: 'varchar', unique: true, length: 50 })
-  username: string;
+  @Column({ name: 'nickname', type: 'varchar', unique: true, length: 50 })
+  nickname: string;
 
   @Column({ name: 'password', type: 'varchar', length: 255, select: false })
   password: string;
@@ -55,6 +55,12 @@ export class User {
 
   @Column({ name: 'is_deleted', type: 'boolean', default: false })
   isDeleted: boolean;
+
+  @Column({ name: 'at', type: 'text', nullable: true })
+  at: string | null;
+
+  @Column({ name: 'rt', type: 'text', nullable: true })
+  rt: string | null;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

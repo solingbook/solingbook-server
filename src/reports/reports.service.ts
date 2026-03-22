@@ -23,7 +23,9 @@ export class ReportsService {
     const { targetId, targetType } = createReportDto;
 
     if (targetType === ReportTargetType.USER) {
-      const user = await this.userRepo.findOneById(targetId);
+      const user = await this.userRepo.findUser({
+        where: { userId: targetId },
+      });
 
       if (!user) throw new NotFoundException('User not found');
     }

@@ -22,6 +22,9 @@ export class ApiLog {
   @Column({ name: 'status_code', type: 'smallint' })
   statusCode: number;
 
+  @Column({ name: 'data', type: 'jsonb', nullable: true })
+  data: string;
+
   @Column({
     name: 'response_time_ms',
     type: 'int',

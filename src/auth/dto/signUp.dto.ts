@@ -1,35 +1,27 @@
 import {
   IsDefined,
   IsEmail,
-  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { UserRole } from '../constant/role.enum';
-import { Transform } from 'class-transformer';
 
-export class CreateUserDto {
+export class SignUpDto {
   @IsString()
-  @IsDefined()
-  @IsNotEmpty()
   @IsEmail()
+  @IsNotEmpty()
+  @IsDefined()
   email: string;
 
   @IsString()
-  @IsDefined()
   @IsNotEmpty()
+  @IsDefined()
   nickname: string;
 
   @IsString()
   @IsDefined()
   @IsNotEmpty()
   password: string;
-
-  @IsOptional()
-  @Transform(({ value }) => value ?? UserRole.MEMBER)
-  @IsEnum(UserRole)
-  role?: UserRole;
 
   @IsOptional()
   @IsString()
