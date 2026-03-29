@@ -6,12 +6,15 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { VerificationRulesService } from '../services/verificationRules.service';
 import { VerificationRule } from '../entity/verificationRule.entity';
 import { CreateVerificationRuleDto } from '../dto/createVerificationRule.dto';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('verificationRules')
+@UseGuards(JwtAuthGuard)
 export class VerificationRulesController {
   constructor(
     private readonly verificationRulesService: VerificationRulesService,

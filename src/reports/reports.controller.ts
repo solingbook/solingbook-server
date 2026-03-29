@@ -7,13 +7,16 @@ import {
   ParseUUIDPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { Report } from './report.entity';
 import { CreateReportDto } from './dto/createReport.dto';
 import { GetReportQueryDto } from './dto/gerReportQuery.dto';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('reports')
+@UseGuards(JwtAuthGuard)
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 

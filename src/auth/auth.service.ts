@@ -81,7 +81,7 @@ export class AuthService {
     return bcrypt.hash(password, 10);
   }
 
-  private async signTokens(userId: string) {
+  async signTokens(userId: string) {
     const payload: JwtPayload = { sub: userId };
 
     const accessToken = this.jwtService.sign(payload);
@@ -91,6 +91,17 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async verifyToken(token: string) {
+    try {
+      this.jwtService.verify(token, {
+        secret: this.configService.get('JWT_SECRET'),
+      });
+    } catch (err) {
+      console.error(err);
+      throw new UnauthorizedException('유효한 토큰이 아닙니다.');
+    }
   }
 
   private async verifyPassword(newPw: string, dbPw: string) {
