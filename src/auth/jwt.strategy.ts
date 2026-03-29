@@ -28,15 +28,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     @User() user: UserEntity -> controller에서 사용가능
   */
   async validate(payload: JwtPayload) {
-    console.log('test', payload);
-
     const { sub, exp } = payload;
 
     const isExpired = Date.now() >= exp * 1000;
 
-    // if ((sub = 'TEST_USER')) {
-
-    // }
+    // TODO: 테스트 유저 따로 처리
 
     const user = await this.userService.findOneById(sub);
 

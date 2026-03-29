@@ -14,7 +14,7 @@ import { JwtAuthGuard } from './auth.guard';
       inject: [TypedConfigService],
       useFactory: (config: TypedConfigService) => ({
         secret: config.get('JWT_SECRET'),
-        signOptions: { expiresIn: '3s' },
+        signOptions: { expiresIn: '1d' },
       }),
     }),
     UsersModule,

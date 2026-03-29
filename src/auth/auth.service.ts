@@ -1,9 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from 'src/users/users.service';
@@ -13,6 +8,10 @@ import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signUp.dto';
 import { CreateUserDto } from 'src/users/dto/createUser.dto';
 import { UserRole } from 'src/users/constant/role.enum';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
+import { EConflictException } from 'src/global/exceptions/EConflictException';
+import { EUnauthorizedException } from 'src/global/exceptions/EUnauthorizedException';
 
 @Injectable()
 export class AuthService {
@@ -29,14 +28,21 @@ export class AuthService {
       where: { email },
     });
 
-    if (emailUser.length) throw new ConflictException('email already used');
+    if (emailUser.length)
+      throw new EConflictException({
+        message: '이미 존재하는 이메일 입니다.',
+        errorCode: ERROR_CODE.EMAIL_ALREADY_USED,
+      });
 
     const nicknameUser = await this.userService.findUser({
       where: { nickname },
     });
 
     if (nicknameUser.length)
-      throw new ConflictException('nickname already used');
+      throw new EConflictException({
+        message: '이미 존재하는 닉네임 입니다.',
+        errorCode: ERROR_CODE.NICKNAME_ALREADY_USED,
+      });
 
     // TODO: 비밀번호 양식검사 보완하기
 
@@ -62,13 +68,21 @@ export class AuthService {
       },
     });
 
-    if (!dbUser) throw new NotFoundException('User not found');
+    if (!dbUser)
+      throw new ENotFoundException({
+        message: '존재하지 않는 이메일입니다.',
+        errorCode: ERROR_CODE.USER_NOT_FOUND,
+      });
 
     const dbPw = dbUser.password;
 
     const isValid = await this.verifyPassword(password, dbPw);
 
-    if (!isValid) throw new UnauthorizedException('password incorrect');
+    if (!isValid)
+      throw new EUnauthorizedException({
+        message: '비밀번호가 일치하지 않습니다.',
+        errorCode: ERROR_CODE.INVALID_PASSWORD,
+      });
 
     const { accessToken, refreshToken } = await this.signTokens(dbUser.userId);
 
@@ -100,7 +114,11 @@ export class AuthService {
       });
     } catch (err) {
       console.error(err);
-      throw new UnauthorizedException('유효한 토큰이 아닙니다.');
+
+      throw new EUnauthorizedException({
+        message: '유효한 토큰이 아닙니다.',
+        errorCode: ERROR_CODE.INVALID_TOKEN,
+      });
     }
   }
 

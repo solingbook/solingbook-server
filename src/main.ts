@@ -7,6 +7,8 @@ import { initializeTransactionalContext } from 'typeorm-transactional';
 import { ServiceLogInterceptor } from './global/interceptors/serviceLog.interceptor';
 import { TokenRefreshInterceptor } from './global/interceptors/tokenRefresh.interceptor';
 import * as cookieParser from 'cookie-parser';
+import { ResponseInterceptor } from './global/interceptors/response.interceptor';
+import { GlobalExceptionFilter } from './global/filters/globalException.filter';
 
 async function bootstrap() {
   initializeTransactionalContext(); // 트랜잭션 컨텍스트 초기화
@@ -29,7 +31,10 @@ async function bootstrap() {
     new LoggerInterceptor(),
     app.get(ServiceLogInterceptor),
     app.get(TokenRefreshInterceptor),
+    new ResponseInterceptor(),
   );
+
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   await app.listen(configService.get('PORT'));
 }
