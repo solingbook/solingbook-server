@@ -12,13 +12,18 @@ import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
 import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
 import { EConflictException } from 'src/global/exceptions/EConflictException';
 import { EUnauthorizedException } from 'src/global/exceptions/EUnauthorizedException';
+import { EmailVerificationDto } from './dto/emailVerification.dto';
+import { NodeMailer } from './providor/nodeMailer';
+import { TypedConfigService } from 'src/configs/typedConfig.service';
+import { EServiceUnavailableException } from 'src/global/exceptions/EServiceUnavailableException';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly configService: ConfigService,
+    private readonly configService: TypedConfigService,
     private readonly userService: UsersService,
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService,
+    private readonly nodeMailer: NodeMailer,
   ) {}
 
   async signUp(signUpDto: SignUpDto) {
@@ -91,8 +96,44 @@ export class AuthService {
     return { accessToken };
   }
 
+  async emailVerificationSignup(emailVerificationDto: EmailVerificationDto) {
+    const { email } = emailVerificationDto;
+
+    const [user] = await this.userService.findOneByEmail(email);
+
+    if (user) {
+      throw new EConflictException({
+        message: '이미 존재하는 이메일 입니다.',
+        errorCode: ERROR_CODE.EMAIL_ALREADY_USED,
+      });
+    }
+
+    const token = await this.signEmailVerificationToken(email);
+
+    try {
+      await this.nodeMailer.sendEmail({
+        to: email,
+        subject: '[솔링북] 회원가입 이메일 인증을 위한 링크입니다.',
+        link: `${this.configService.get('BASE_URL')}/signup?t=${token}`,
+      });
+    } catch (err) {
+      console.error(err);
+
+      throw new EServiceUnavailableException({
+        message: '이메일 전송에 실패했습니다.',
+        errorCode: ERROR_CODE.EMAIL_SEND_FAILURE,
+      });
+    }
+  }
+
   async hash(password: string) {
     return bcrypt.hash(password, 10);
+  }
+
+  async signEmailVerificationToken(email: string) {
+    const payload: JwtPayload = { sub: email };
+
+    return this.jwtService.sign(payload, { expiresIn: '5s' });
   }
 
   async signTokens(userId: string) {
@@ -101,10 +142,7 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '30d' });
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return { accessToken, refreshToken };
   }
 
   async verifyToken(token: string) {

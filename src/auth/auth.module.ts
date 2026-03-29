@@ -6,6 +6,7 @@ import { TypedConfigService } from 'src/configs/typedConfig.service';
 import { UsersModule } from 'src/users/users.module';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './auth.guard';
+import { NodeMailer } from './providor/nodeMailer';
 
 @Global()
 @Module({
@@ -20,7 +21,7 @@ import { JwtAuthGuard } from './auth.guard';
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard, NodeMailer],
   exports: [AuthService, JwtModule, JwtAuthGuard],
 })
 export class AuthModule {}

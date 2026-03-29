@@ -8,7 +8,7 @@ import { Request } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 
-const WHITELIST = ['/auth/login', '/auth/signup'];
+const WHITE_LIST = ['/auth/*'];
 
 @Injectable()
 export class TokenRefreshInterceptor implements NestInterceptor {
@@ -23,7 +23,7 @@ export class TokenRefreshInterceptor implements NestInterceptor {
 
     const path = req.path;
 
-    if (WHITELIST.includes(path)) {
+    if (WHITE_LIST.some((pattern) => this.matchPath(pattern, path))) {
       return next.handle();
     }
 
@@ -58,5 +58,13 @@ export class TokenRefreshInterceptor implements NestInterceptor {
 
   private extractUserIdFromExpiredToken(req: Request) {
     return req.user?.userId;
+  }
+
+  private matchPath(pattern: string, path: string): boolean {
+    if (pattern.endsWith('/*')) {
+      const basePattern = pattern.slice(0, -2);
+      return path.startsWith(basePattern);
+    }
+    return pattern === path;
   }
 }

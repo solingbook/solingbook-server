@@ -3,6 +3,7 @@ import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signUp.dto';
 import { Response } from 'express';
+import { EmailVerificationDto } from './dto/emailVerification.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -28,5 +29,10 @@ export class AuthController {
 
     // TODO: res양식 잡으면 수정
     return {};
+  }
+
+  @Post('email-verification')
+  async emailVerification(@Body() body: EmailVerificationDto) {
+    return this.authService.emailVerificationSignup(body);
   }
 }
