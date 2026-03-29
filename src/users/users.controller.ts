@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -19,6 +20,8 @@ export class UsersController {
 
   @Get()
   async findAll(): Promise<UserEntity[]> {
+    throw new UnauthorizedException('testtes');
+
     return this.usersService.findAll();
   }
 

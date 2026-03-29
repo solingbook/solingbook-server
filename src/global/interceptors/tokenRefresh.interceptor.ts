@@ -6,8 +6,9 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from 'src/auth/auth.service';
-import { User } from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
+
+const WHITELIST = ['/auth/login', '/auth/signup'];
 
 @Injectable()
 export class TokenRefreshInterceptor implements NestInterceptor {
@@ -17,8 +18,14 @@ export class TokenRefreshInterceptor implements NestInterceptor {
   ) {}
 
   async intercept(context: ExecutionContext, next: CallHandler) {
-    const req = context.switchToHttp().getRequest();
+    const req = context.switchToHttp().getRequest() as Request;
     const res = context.switchToHttp().getResponse();
+
+    const path = req.path;
+
+    if (WHITELIST.includes(path)) {
+      return next.handle();
+    }
 
     if (req.user.isExpired) {
       const userId = this.extractUserIdFromExpiredToken(req);
@@ -50,6 +57,6 @@ export class TokenRefreshInterceptor implements NestInterceptor {
   }
 
   private extractUserIdFromExpiredToken(req: Request) {
-    return (req.user as User)?.userId;
+    return req.user?.userId;
   }
 }
