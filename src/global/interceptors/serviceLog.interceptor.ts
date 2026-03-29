@@ -26,7 +26,7 @@ export class ServiceLogInterceptor implements NestInterceptor {
         const responseTimeMs = Date.now() - start;
 
         const dto: CreateApiLogDto = {
-          userId: (req as any).user ?? null,
+          userId: (req as any).user?.userId ?? null,
           method: req.method,
           endpoint: req.originalUrl,
           statusCode: res.statusCode,

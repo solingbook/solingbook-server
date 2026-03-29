@@ -5,11 +5,15 @@ import { ValidationPipe } from '@nestjs/common';
 import { LoggerInterceptor } from './global/interceptors/logger.interceptor';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import { ServiceLogInterceptor } from './global/interceptors/serviceLog.interceptor';
+import { TokenRefreshInterceptor } from './global/interceptors/tokenRefresh.interceptor';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   initializeTransactionalContext(); // 트랜잭션 컨텍스트 초기화
 
   const app = await NestFactory.create(AppModule);
+
+  app.use(cookieParser());
 
   const configService = app.get(TypedConfigService);
 
@@ -24,6 +28,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     new LoggerInterceptor(),
     app.get(ServiceLogInterceptor),
+    app.get(TokenRefreshInterceptor),
   );
 
   await app.listen(configService.get('PORT'));

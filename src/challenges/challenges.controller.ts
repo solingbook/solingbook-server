@@ -6,14 +6,17 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { CreateChallengeDto } from './dto/createChallenge.dto';
 import { CreateChallengeResultDto } from './dto/createChallengeResult.dto';
 import { ChallengeResults } from './entity/challengeResult.entity';
 import { Challenge } from './entity/challenge.entity';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('challenges')
+@UseGuards(JwtAuthGuard)
 export class ChallengesController {
   constructor(private readonly challengeService: ChallengesService) {}
 

@@ -20,6 +20,7 @@ import { ServiceLogsModule } from './service-logs/service-logs.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServiceLogInterceptor } from './global/interceptors/serviceLog.interceptor';
 import { AuthModule } from './auth/auth.module';
+import { TokenRefreshInterceptor } from './global/interceptors/tokenRefresh.interceptor';
 
 @Module({
   imports: [
@@ -66,6 +67,6 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ServiceLogInterceptor],
+  providers: [AppService, ServiceLogInterceptor, TokenRefreshInterceptor],
 })
 export class AppModule {}
