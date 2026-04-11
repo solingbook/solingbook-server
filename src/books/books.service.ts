@@ -1,7 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { TypeOrmBookRepository } from './books.repository';
 import { BookRepository } from './books.interface';
 import { CreateBookDto } from './dto/createBook.dto';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
 
 @Injectable()
 export class BooksService {
@@ -19,7 +21,10 @@ export class BooksService {
   async findOne(bookId: string) {
     const book = await this.bookRepo.findOneById(bookId);
 
-    if (!book) throw new NotFoundException('Book not found');
+    if (!book) throw new ENotFoundException({
+            message: '존재하지 않는 도서 정보입니다.',
+            errorCode: ERROR_CODE.BOOK_NOT_FOUND,
+          });;
 
     return book;
   }

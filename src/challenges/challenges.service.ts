@@ -1,13 +1,14 @@
 import {
-  ConflictException,
   Inject,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { TypeOrmChallengeRepository } from './challenges.repository';
 import { CreateChallengeDto } from './dto/createChallenge.dto';
 import { CreateChallengeResultDto } from './dto/createChallengeResult.dto';
 import { TypeOrmChallengeResultRepository } from './challengeResults.repository';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
+import { EConflictException } from 'src/global/exceptions/EConflictException';
 
 @Injectable()
 export class ChallengesService {
@@ -35,7 +36,10 @@ export class ChallengesService {
   async findOneById(challengeId: string) {
     const challenge = await this.challengeRepo.findOneById(challengeId);
 
-    if (!challenge) throw new NotFoundException('Challenge not found');
+    if (!challenge) throw new ENotFoundException({
+            message: '존재하지 않는 챌린지 정보입니다.',
+            errorCode: ERROR_CODE.CHALLENGE_NOT_FOUND,
+          });;
 
     return challenge;
   }
@@ -44,7 +48,10 @@ export class ChallengesService {
     const result = await this.challengeRepo.delete(challengeId);
 
     if (result.affected === 0) {
-      throw new NotFoundException('Challenge not found');
+      throw new ENotFoundException({
+        message: '존재하지 않는 챌린지 정보입니다.',
+        errorCode: ERROR_CODE.CHALLENGE_NOT_FOUND,
+      });;
     }
   }
 
@@ -58,16 +65,20 @@ export class ChallengesService {
     );
 
     if (existingResult) {
-      throw new ConflictException(
-        'A challenge result already exists for this progressId',
-      );
+      throw new EConflictException({
+        message: '이미 챌린지 결과가 존재합니다.',
+        errorCode: ERROR_CODE.CHALLENGE_RESULT_ALREADY_EXISTS,
+      });
     }
     return await this.resultRepo.createResult(resultDto);
   }
 
   async getResultByProgressId(progressId: string) {
     const result = await this.resultRepo.findByProgressId(progressId);
-    if (!result) throw new NotFoundException('Challenge result not found');
+    if (!result) throw new ENotFoundException({
+            message: '존재하지 않는 챌린지 결과 정보입니다.',
+            errorCode: ERROR_CODE.CHALLENGE_RESULT_NOT_FOUND,
+          });;
     return result;
   }
 }

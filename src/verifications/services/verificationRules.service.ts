@@ -1,12 +1,13 @@
 import {
-  ConflictException,
   Inject,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { TypeOrmVerificationRuleRepository } from '../repositories/verificationRules.repository';
 import { VerificationRuleRepository } from '../interfaces/verificationRules.interface';
 import { CreateVerificationRuleDto } from '../dto/createVerificationRule.dto';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
+import { EConflictException } from 'src/global/exceptions/EConflictException';
 
 @Injectable()
 export class VerificationRulesService {
@@ -21,9 +22,10 @@ export class VerificationRulesService {
     );
 
     if (existing) {
-      throw new ConflictException(
-        'Verification rule already exists for this challenge',
-      );
+      throw new EConflictException({
+        message: '이미 존재하는 인증 규칙입니다.',
+        errorCode: ERROR_CODE.VERIFICATION_RULE_ALREADY_EXISTS,
+      });
     }
 
     return this.verificationRuleRepo.create(createVerificationRuleDto);
@@ -34,7 +36,10 @@ export class VerificationRulesService {
       await this.verificationRuleRepo.findOneById(verificationRuleId);
 
     if (!verificationRule)
-      throw new NotFoundException('Verication Rule not found');
+      throw new ENotFoundException({
+            message: '존재하지 않는 인증 규칙입니다.',
+            errorCode: ERROR_CODE.VERIFICATION_RULE_NOT_FOUND,
+          });
 
     return verificationRule;
   }
@@ -47,7 +52,10 @@ export class VerificationRulesService {
     const result = await this.verificationRuleRepo.delete(verificationRuleId);
 
     if (result.affected === 0) {
-      throw new NotFoundException('VerificationRule not found');
+      throw new ENotFoundException({
+            message: '존재하지 않는 인증 규칙입니다.',
+            errorCode: ERROR_CODE.VERIFICATION_RULE_NOT_FOUND,
+          });;
     }
   }
 }

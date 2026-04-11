@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
-import { JwtPayload } from './types/jwtPayload.type';
+import { EmailVerificationPayload, JwtPayload } from './types/jwtPayload.type';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signUp.dto';
 import { CreateUserDto } from 'src/users/dto/createUser.dto';
@@ -13,9 +12,12 @@ import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
 import { EConflictException } from 'src/global/exceptions/EConflictException';
 import { EUnauthorizedException } from 'src/global/exceptions/EUnauthorizedException';
 import { EmailVerificationDto } from './dto/emailVerification.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { DeleteAccountDto } from './dto/deleteAccount.dto';
 import { NodeMailer } from './providor/nodeMailer';
 import { TypedConfigService } from 'src/configs/typedConfig.service';
 import { EServiceUnavailableException } from 'src/global/exceptions/EServiceUnavailableException';
+import { EmailVerificationPurpose } from './constant/emailVerificationPurpose.enum';
 
 @Injectable()
 export class AuthService {
@@ -96,29 +98,43 @@ export class AuthService {
     return { accessToken };
   }
 
-  async emailVerificationSignup(emailVerificationDto: EmailVerificationDto) {
-    const { email } = emailVerificationDto;
+  async resetPassword(dto: ResetPasswordDto) {
+    const payload = await this.verifyEmailToken(
+      dto.token,
+      EmailVerificationPurpose.RESET_PASSWORD,
+    );
 
-    const [user] = await this.userService.findOneByEmail(email);
+    const user = await this.userService.findOneByEmail(payload.sub);
+    const hashedPassword = await this.hash(dto.newPassword);
+    await this.userService.resetPassword(user.userId, hashedPassword);
+  }
 
-    if (user) {
-      throw new EConflictException({
-        message: '이미 존재하는 이메일 입니다.',
-        errorCode: ERROR_CODE.EMAIL_ALREADY_USED,
-      });
-    }
+  async deleteAccount(dto: DeleteAccountDto) {
+    const payload = await this.verifyEmailToken(
+      dto.token,
+      EmailVerificationPurpose.DELETE_ACCOUNT,
+    );
 
-    const token = await this.signEmailVerificationToken(email);
+    const user = await this.userService.findOneByEmail(payload.sub);
+    await this.userService.archiveDeletedUser(user, dto.deletionReason);
+  }
+
+  async sendVerificationEmail(emailVerificationDto: EmailVerificationDto) {
+    const { email, purpose } = emailVerificationDto;
+
+    await this.validateByPurpose(email, purpose);
+
+    const token = await this.signEmailVerificationToken(email, purpose);
+    const { subject, path } = this.getMailConfig(purpose);
 
     try {
       await this.nodeMailer.sendEmail({
         to: email,
-        subject: '[솔링북] 회원가입 이메일 인증을 위한 링크입니다.',
-        link: `${this.configService.get('BASE_URL')}/signup?t=${token}`,
+        subject,
+        link: `${this.configService.get('BASE_URL')}/${path}?t=${token}`,
       });
     } catch (err) {
       console.error(err);
-
       throw new EServiceUnavailableException({
         message: '이메일 전송에 실패했습니다.',
         errorCode: ERROR_CODE.EMAIL_SEND_FAILURE,
@@ -126,14 +142,92 @@ export class AuthService {
     }
   }
 
+  private async validateByPurpose(
+    email: string,
+    purpose: EmailVerificationPurpose,
+  ) {
+    const users = await this.userService.findUser({ where: { email } });
+    const user = users[0];
+
+    switch (purpose) {
+      case EmailVerificationPurpose.SIGNUP:
+        if (user)
+          throw new EConflictException({
+            message: '이미 존재하는 이메일입니다.',
+            errorCode: ERROR_CODE.EMAIL_ALREADY_USED,
+          });
+        break;
+
+      case EmailVerificationPurpose.RESET_PASSWORD:
+      case EmailVerificationPurpose.DELETE_ACCOUNT:
+        if (!user)
+          throw new ENotFoundException({
+            message: '존재하지 않는 이메일입니다.',
+            errorCode: ERROR_CODE.USER_NOT_FOUND,
+          });
+        break;
+    }
+  }
+
+  private getMailConfig(purpose: EmailVerificationPurpose) {
+    const config = {
+      [EmailVerificationPurpose.SIGNUP]: {
+        subject: '[솔링북] 회원가입 이메일 인증',
+        path: 'signup',
+      },
+      [EmailVerificationPurpose.RESET_PASSWORD]: {
+        subject: '[솔링북] 비밀번호 재설정 이메일 인증',
+        path: 'reset-password',
+      },
+      [EmailVerificationPurpose.DELETE_ACCOUNT]: {
+        subject: '[솔링북] 회원탈퇴 이메일 인증',
+        path: 'delete-account',
+      },
+    };
+    return config[purpose];
+  }
+
+  // async emailVerificationSignup(emailVerificationDto: EmailVerificationDto) {
+  //   const { email } = emailVerificationDto;
+
+  //   const [user] = await this.userService.findOneByEmail(email);
+
+  //   if (user) {
+  //     throw new EConflictException({
+  //       message: '이미 존재하는 이메일 입니다.',
+  //       errorCode: ERROR_CODE.EMAIL_ALREADY_USED,
+  //     });
+  //   }
+
+  //   const token = await this.signEmailVerificationToken(email);
+
+  //   try {
+  //     await this.nodeMailer.sendEmail({
+  //       to: email,
+  //       subject: '[솔링북] 회원가입 이메일 인증을 위한 링크입니다.',
+  //       link: `${this.configService.get('BASE_URL')}/signup?t=${token}`,
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+
+  //     throw new EServiceUnavailableException({
+  //       message: '이메일 전송에 실패했습니다.',
+  //       errorCode: ERROR_CODE.EMAIL_SEND_FAILURE,
+  //     });
+  //   }
+  // }
+
   async hash(password: string) {
     return bcrypt.hash(password, 10);
   }
 
-  async signEmailVerificationToken(email: string) {
-    const payload: JwtPayload = { sub: email };
+  async signEmailVerificationToken(
+    email: string,
+    purpose: EmailVerificationPurpose,
+  ) {
+    const payload: EmailVerificationPayload = { sub: email, purpose };
 
-    return this.jwtService.sign(payload, { expiresIn: '5s' });
+    return this.jwtService.sign(payload, { expiresIn: '5m' });
   }
 
   async signTokens(userId: string) {
@@ -153,6 +247,31 @@ export class AuthService {
     } catch (err) {
       console.error(err);
 
+      throw new EUnauthorizedException({
+        message: '유효한 토큰이 아닙니다.',
+        errorCode: ERROR_CODE.INVALID_TOKEN,
+      });
+    }
+  }
+
+  async verifyEmailToken(
+    token: string,
+    expectedPurpose: EmailVerificationPurpose,
+  ) {
+    try {
+      const payload = this.jwtService.verify<EmailVerificationPayload>(token, {
+        secret: this.configService.get('JWT_SECRET'),
+      });
+
+      if (payload.purpose !== expectedPurpose) {
+        throw new EUnauthorizedException({
+          message: '유효한 토큰이 아닙니다.',
+          errorCode: ERROR_CODE.INVALID_TOKEN,
+        });
+      }
+      return payload;
+    } catch (err) {
+      console.error(err);
       throw new EUnauthorizedException({
         message: '유효한 토큰이 아닙니다.',
         errorCode: ERROR_CODE.INVALID_TOKEN,

@@ -30,6 +30,10 @@ export class TypeOrmUserRepository implements UserRepository {
     return this.repo.update({ userId }, { at, rt });
   }
 
+  async resetPassword(userId: string, hashedPassword: string) {
+    return this.repo.update({ userId }, { password: hashedPassword });
+  }
+
   async deleteUser(userId: string) {
     return this.repo.delete({ userId });
   }

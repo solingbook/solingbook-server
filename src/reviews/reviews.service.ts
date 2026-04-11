@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Transactional } from 'typeorm-transactional';
 import { CreateReviewDto } from './dto/createReview.dto';
 import { TypeOrmReviewRepository } from './reviews.repository';
@@ -6,6 +6,8 @@ import { ReviewRepository } from './reviews.interface';
 import { ReviewTargetType } from './constant/ReviewTargetType.enum';
 import { TypeOrmBookRepository } from 'src/books/books.repository';
 import { BookRepository } from 'src/books/books.interface';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
 
 @Injectable()
 export class ReviewsService {
@@ -34,7 +36,10 @@ export class ReviewsService {
 
     if (targetType === ReviewTargetType.BOOK) {
       const book = await this.bookRepo.findOneById(targetId);
-      if (!book) throw new NotFoundException('Book not found');
+      if (!book) throw new ENotFoundException({
+            message: '존재하지 않는 도서 정보입니다.',
+            errorCode: ERROR_CODE.BOOK_NOT_FOUND,
+          });;
     }
 
     return this.reviewRepo.create(createReviewDto);
@@ -43,7 +48,10 @@ export class ReviewsService {
   async findOne(reviewId: string) {
     const review = await this.reviewRepo.findOneById(reviewId);
 
-    if (!review) throw new NotFoundException('Review not found');
+    if (!review) throw new ENotFoundException({
+            message: '존재하지 않는 리뷰 정보입니다.',
+            errorCode: ERROR_CODE.REVIEW_NOT_FOUND,
+          });;
 
     return review;
   }

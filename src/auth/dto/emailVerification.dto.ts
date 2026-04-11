@@ -1,4 +1,11 @@
-import { IsDefined, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDefined,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
+import { EmailVerificationPurpose } from '../constant/emailVerificationPurpose.enum';
 
 export class EmailVerificationDto {
   @IsString()
@@ -6,4 +13,7 @@ export class EmailVerificationDto {
   @IsNotEmpty()
   @IsDefined()
   email: string;
+
+  @IsEnum(EmailVerificationPurpose)
+  purpose: EmailVerificationPurpose;
 }

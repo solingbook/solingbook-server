@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateReportDto } from './dto/createReport.dto';
 import { GetReportQueryDto } from './dto/gerReportQuery.dto';
 import { TypeOrmReportRepository } from './reports.repository';
@@ -7,6 +7,8 @@ import { TypeOrmUserRepository } from 'src/users/users.repository';
 import { UserRepository } from 'src/users/users.interface';
 import { ReportTargetType } from './constant/reportTargetType.enum';
 import { Transactional } from 'typeorm-transactional';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
 
 @Injectable()
 export class ReportsService {
@@ -27,7 +29,10 @@ export class ReportsService {
         where: { userId: targetId },
       });
 
-      if (!user) throw new NotFoundException('User not found');
+      if (!user) throw new ENotFoundException({
+            message: '존재하지 않는 사용자 정보입니다.',
+            errorCode: ERROR_CODE.USER_NOT_FOUND,
+          });;
     }
 
     // TODO: Post 테이블 생성 후 Post도 검증하기
@@ -39,7 +44,10 @@ export class ReportsService {
   async findOne(reportId: string, query: GetReportQueryDto) {
     const report = await this.reportRepo.findOne(reportId, query);
 
-    if (!report) throw new NotFoundException('Report not found');
+    if (!report) throw new ENotFoundException({
+            message: '존재하지 않는 신고 정보입니다.',
+            errorCode: ERROR_CODE.REPORT_NOT_FOUND,
+          });;
 
     return report;
   }

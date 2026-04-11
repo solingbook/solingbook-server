@@ -1,7 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { TypeOrmEssayRepository } from '../repositories/essays.repository';
 import { EssayRepository } from '../interfaces/essays.interface';
 import { CreateEssayDto } from '../dto/createEssay.dto';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
 
 @Injectable()
 export class EssaysService {
@@ -10,7 +12,7 @@ export class EssaysService {
     private readonly essayRepo: EssayRepository,
   ) {}
 
-  // TODO: VerificationService 연동 -> 인증 기록 생성 및 에세이 연결
+  // TODO: VerificationService 연동 -> 인증 기록 생성 및 서평 연결
   async create(createEssayDto: CreateEssayDto) {
     return this.essayRepo.create(createEssayDto);
   }
@@ -18,7 +20,10 @@ export class EssaysService {
   async findOne(essayId: string) {
     const essay = await this.essayRepo.findOneById(essayId);
 
-    if (!essay) throw new NotFoundException('Essay not found');
+    if (!essay) throw new ENotFoundException({
+            message: '존재하지 않는 서평 정보입니다.',
+            errorCode: ERROR_CODE.ESSAY_NOT_FOUND,
+          });;
 
     return essay;
   }
@@ -31,7 +36,10 @@ export class EssaysService {
     const result = await this.essayRepo.delete(essayId);
 
     if (result.affected === 0) {
-      throw new NotFoundException('Essay not found');
+      throw new ENotFoundException({
+            message: '존재하지 않는 서평 정보입니다.',
+            errorCode: ERROR_CODE.ESSAY_NOT_FOUND,
+          });;
     }
   }
 }

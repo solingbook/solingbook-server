@@ -1,7 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { TypeOrmChallengePostRepository } from '../repositories/challengePosts.repository';
 import { ChallengePostRepository } from '../interfaces/challengePosts.interface';
 import { CreateChallengePostDto } from '../dto/createChallengePost.dto';
+import { ENotFoundException } from 'src/global/exceptions/ENotFoundException';
+import { ERROR_CODE } from 'src/global/constant/errorCode.constant';
 
 @Injectable()
 export class ChallengePostsService {
@@ -19,7 +21,10 @@ export class ChallengePostsService {
     const challengePost =
       await this.challengePostRepo.findOneById(challengePostId);
 
-    if (!challengePost) throw new NotFoundException('Challenge Post not found');
+    if (!challengePost) throw new ENotFoundException({
+            message: '존재하지 않는 챌린지 포스트 정보입니다.',
+            errorCode: ERROR_CODE.CHALLENGE_POST_NOT_FOUND,
+          });;
 
     return challengePost;
   }
@@ -32,7 +37,10 @@ export class ChallengePostsService {
     const result = await this.challengePostRepo.delete(challengePostId);
 
     if (result.affected === 0) {
-      throw new NotFoundException('Challenge Post not found');
+      throw new ENotFoundException({
+            message: '존재하지 않는 챌린지 포스트 정보입니다.',
+            errorCode: ERROR_CODE.CHALLENGE_POST_NOT_FOUND,
+          });;
     }
   }
 }

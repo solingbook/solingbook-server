@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signUp.dto';
 import { Response } from 'express';
 import { EmailVerificationDto } from './dto/emailVerification.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { DeleteAccountDto } from './dto/deleteAccount.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +35,16 @@ export class AuthController {
 
   @Post('email-verification')
   async emailVerification(@Body() body: EmailVerificationDto) {
-    return this.authService.emailVerificationSignup(body);
+    return this.authService.sendVerificationEmail(body);
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    return this.authService.resetPassword(body);
+  }
+
+  @Post('delete-account')
+  async deleteAccount(@Body() body: DeleteAccountDto) {
+    return this.authService.deleteAccount(body);
   }
 }

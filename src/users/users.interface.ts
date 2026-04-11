@@ -7,5 +7,6 @@ export interface UserRepository {
   findUser(options: FindManyOptions<User>): Promise<User[]>;
   findAll(): Promise<User[]>;
   setTokens(userId: string, at: string, rt: string): Promise<UpdateResult>;
+  resetPassword(userId: string, hashedPassword: string): Promise<UpdateResult>;
   deleteUser(id: string): Promise<DeleteResult>;
 }
