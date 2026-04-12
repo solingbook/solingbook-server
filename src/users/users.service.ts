@@ -34,10 +34,11 @@ export class UsersService {
   async findOneById(userId: string) {
     const [user] = await this.userRepo.findUser({ where: { userId } });
 
-    if (!user) throw new ENotFoundException({
-            message: '존재하지 않는 사용자 정보입니다.',
-            errorCode: ERROR_CODE.USER_NOT_FOUND,
-          });
+    if (!user)
+      throw new ENotFoundException({
+        message: '존재하지 않는 사용자 정보입니다.',
+        errorCode: ERROR_CODE.USER_NOT_FOUND,
+      });
 
     return user;
   }
@@ -46,10 +47,11 @@ export class UsersService {
     const users = await this.userRepo.findUser({ where: { email } });
     const [user] = users;
 
-    if (!user) throw new ENotFoundException({
-            message: '존재하지 않는 사용자 정보입니다.',
-            errorCode: ERROR_CODE.USER_NOT_FOUND,
-          });
+    if (!user)
+      throw new ENotFoundException({
+        message: '존재하지 않는 사용자 정보입니다.',
+        errorCode: ERROR_CODE.USER_NOT_FOUND,
+      });
 
     return user;
   }
