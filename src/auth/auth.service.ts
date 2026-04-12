@@ -265,8 +265,8 @@ export class AuthService {
 
       if (payload.purpose !== expectedPurpose) {
         throw new EUnauthorizedException({
-          message: '유효한 토큰이 아닙니다.',
-          errorCode: ERROR_CODE.INVALID_TOKEN,
+          message: '토큰 목적이 일치하지 않습니다.',
+          errorCode: ERROR_CODE.WRONG_TOKEN_PURPOSE,
         });
       }
       return payload;
